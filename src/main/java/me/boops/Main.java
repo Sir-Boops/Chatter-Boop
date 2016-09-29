@@ -1,29 +1,25 @@
 package me.boops;
 
-import me.boops.cache.DynamicCache;
-import me.boops.cache.StaticCache;
-import me.boops.configs.CheckConfig;
-import me.boops.configs.TwitchConfig;
+import me.boops.Configs.TwitchConfig;
+import me.boops.cache.Cache;
+import me.boops.configs.TwitchConfigRead;
+import me.boops.functions.FindPath;
 
 public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		
 		//Print Welcome Message!
-		System.out.println("Chatter-Boop Starting!, Version: " + StaticCache.version);
+		System.out.println("Chatter-Boop Starting! Version: " + Cache.version);
 		
 		//Get Current Jar Name And Path Then Cache It
-		String loc = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		String[] jarname = loc.split("/");
-		DynamicCache.jarname = jarname[jarname.length - 1];
-		DynamicCache.jarpath = loc.replace(DynamicCache.jarname, "");
+		new FindPath();
 		
-		//Load Or Create The Configs
-		//Check For Config Path
-		new CheckConfig();
+		//Load Configs
+		new TwitchConfigRead().Load();
 		
-		//Load Twitch
-		new TwitchConfig();
+		System.out.println(TwitchConfig.enabled);
+		
 	}
 	
 }

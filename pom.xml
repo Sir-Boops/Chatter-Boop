@@ -4,7 +4,13 @@
     <artifactId>Chatter-Boop</artifactId>
     <version>-SNAPSHOT</version>
 
-    <dependencies></dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
