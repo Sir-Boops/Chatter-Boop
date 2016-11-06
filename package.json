@@ -1,0 +1,14 @@
+{
+    "name": "Chatter-Boop",
+    "description": "A Mutiplatform chat bot",
+    "author": "Sir_Boops <admin@boops.me>",
+    "license": "GPL-3.0",
+    "homepage": "https://git.frgl.pw/Sir_Boops/Chatter-Boop",
+    "bugs": "https://git.frgl.pw/Sir_Boops/Chatter-Boop/issues",
+    "repository": "https://git.frgl.pw/Sir_Boops/Chatter-Boop",
+    "dependencies": {
+        "tmi.js": "1.1.2",
+        "beam-client-node": "0.9.0"
+    },
+    "engine": "node >= 6.9.0"
+}

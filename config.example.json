@@ -1,0 +1,12 @@
+{
+    "twitch": {
+        "username": "",
+        "oauth": "",
+        "channel": ""
+    },
+    "beam": {
+        "username": "",
+        "password": "",
+        "channelID": ""
+    }
+}

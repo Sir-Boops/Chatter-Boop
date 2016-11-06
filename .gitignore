@@ -1,9 +1,2 @@
-.settings/*
-.classpath
-.project
-target/*
-dependency-reduced-pom.xml
+node_modules/*
 config.json
-/target/
-/bin/
-.directory
