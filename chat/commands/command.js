@@ -9,9 +9,9 @@ var command = function(message, user, ul) {
         //Check to make sure it was written right
         if (message.split(/ /)[2] && message.split(/ /)[2].startsWith("~") && message.split(/ /)[3] <= 4) {
 
-            var isFile = fs.accessSync("custom_commands", fs.F_OK);
+            var isFile = fs.existsSync("custom_commands");
 
-            if (!isFile) {
+            if (isFile) {
                 //Read the File
                 var file = fs.readFileSync("custom_commands", "UTF8");
 
@@ -39,11 +39,14 @@ var command = function(message, user, ul) {
                 } else {
                     var res = message.replace(message.split(/ /)[0], "").replace(message.split(/ /)[1], "").replace(message.split(/ /)[2], "");
                     var res2 = res.replace(message.split(/ /)[3], "").replace(/    /, "");
-                    fs.appendFileSync("custom_commands", message.split(/ /)[2] + " " + message.split(/ /)[3] + " " + res2 + "\n");
+                    fs.appendFileSync("custom_commands", message.split(/ /)[2] + " " + message.split(/ /)[3] + " " + res2 + "\n", "UTF8");
                     return "Command Added"
                 }
             } else {
-                return "No File"
+              var res = message.replace(message.split(/ /)[0], "").replace(message.split(/ /)[1], "").replace(message.split(/ /)[2], "");
+              var res2 = res.replace(message.split(/ /)[3], "").replace(/    /, "");
+              fs.writeFileSync("custom_commands", message.split(/ /)[2] + " " + message.split(/ /)[3] + " " + res2 + "\n");
+              return "Command Added"
             }
 
         } else {
@@ -89,7 +92,7 @@ var command = function(message, user, ul) {
                     return "Command Modified"
                 }
             } else {
-                return "No File"
+                return "No Command File"
             }
 
         } else {
@@ -136,7 +139,7 @@ var command = function(message, user, ul) {
                     }
                 }
             } else {
-                return "No File"
+                return "No Command File"
             }
 
         } else {
