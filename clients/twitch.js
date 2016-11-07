@@ -1,5 +1,6 @@
 //Node-JS Imports
 var tmi = require("tmi.js");
+var command_base = require('../chat/base.js');
 
 //Setup the export
 var chat = function(user, pass, channel) {
@@ -31,9 +32,20 @@ var chat = function(user, pass, channel) {
 
 
     //Listen For Messages
-    client.on("chat", function(channel, userstate, message, self) {
+    client.on("chat", function(channel, user, message, self) {
         if (!self) {
-            console.log("[Twitch][" + userstate.username + "] : " + message);
+            console.log("[Twitch][" + user.username + "] : " + message);
+            //Get User Level
+            if (user.badges.broadcaster == "1") {
+                client.say(channel, command_base.chat(message, user.username, 4));
+            } else {
+                if (user.mod == "true") {
+                    client.say(channel, command_base.chat(message, user.username, 3));
+                }
+                if (user.mod == "false") {
+                    client.say(channel, command_base.chat(message, user.username, 1));
+                }
+            }
         };
     });
 };

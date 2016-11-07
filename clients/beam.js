@@ -1,6 +1,7 @@
 //Node-JS Imports
 var BeamClient = require('beam-client-node');
 var BeamSocket = require('beam-client-node/lib/ws');
+var command_base = require('../chat/base.js');
 
 var chat = function(user, pass, channel) {
     //Setup and connect to Beam
@@ -31,7 +32,7 @@ var chat = function(user, pass, channel) {
         // we spool them and run them when connected automatically!
         socket.auth(channelId, userId, authkey)
             .then(() => {
-              console.log("Beam has connected");
+                console.log("Beam has connected");
             })
             .catch(error => {
                 console.log('Oh no! An error occurred!', error);
@@ -40,7 +41,45 @@ var chat = function(user, pass, channel) {
         // Listen to chat messages, note that you will also receive your own!
         socket.on('ChatMessage', data => {
             console.log("[Beam][" + data.user_name + "] : " + data.message.message[0].text);
-            //return socket.call('msg', ['Hello world!']);
+
+            //Check if it's us sending the message
+            if (data.user_name.toLowerCase() != user.toLowerCase()) {
+
+                //Get the user level
+                var ul = 0;
+                for (var i = 0; data.user_roles.length > i; i++) {
+                    //Check For the owner tag
+                    if (data.user_roles[i].toLowerCase() == "owner" && ul < 4) {
+                        ul = 4;
+
+                        //Now Off to the handler
+                        if ((i + 1) >= i) {
+                            var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
+                            return socket.call('msg', [res]);
+                        }
+                    }
+                    //Check for mod
+                    if (data.user_roles[i].toLowerCase() == "mod" && ul < 3) {
+                        ul = 3;
+
+                        //Now Off to the handler
+                        if ((i + 1) >= i) {
+                            var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
+                            return socket.call('msg', [res]);
+                        }
+                    }
+                    //Check For user
+                    if (data.user_roles[i].toLowerCase() == "user" && ul < 1) {
+                        ul = 1;
+
+                        //Now Off to the handler
+                        if ((i + 1) >= i) {
+                            var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
+                            return socket.call('msg', [res]);
+                        }
+                    }
+                }
+            };
         });
 
         // Listen to socket errors, you'll need to handle these!
