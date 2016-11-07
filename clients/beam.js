@@ -55,7 +55,9 @@ var chat = function(user, pass, channel) {
                         //Now Off to the handler
                         if ((i + 1) >= i) {
                             var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
-                            return socket.call('msg', [res]);
+                            if (res) {
+                                return socket.call('msg', [res]);
+                            }
                         }
                     }
                     //Check for mod
@@ -65,7 +67,9 @@ var chat = function(user, pass, channel) {
                         //Now Off to the handler
                         if ((i + 1) >= i) {
                             var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
-                            return socket.call('msg', [res]);
+                            if (res) {
+                                return socket.call('msg', [res]);
+                            }
                         }
                     }
                     //Check For user
@@ -75,7 +79,9 @@ var chat = function(user, pass, channel) {
                         //Now Off to the handler
                         if ((i + 1) >= i) {
                             var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
-                            return socket.call('msg', [res]);
+                            if (res) {
+                                return socket.call('msg', [res]);
+                            }
                         }
                     }
                 }

@@ -33,17 +33,26 @@ var chat = function(user, pass, channel) {
 
     //Listen For Messages
     client.on("chat", function(channel, user, message, self) {
+        console.log("[Twitch][" + user.username + "] : " + message);
         if (!self) {
-            console.log("[Twitch][" + user.username + "] : " + message);
             //Get User Level
             if (user.badges.broadcaster == "1") {
-                client.say(channel, command_base.chat(message, user.username, 4));
+                var res = command_base.chat(message, user.username, 4);
+                if (res) {
+                    client.say(channel, res);
+                }
             } else {
                 if (user.mod == "true") {
-                    client.say(channel, command_base.chat(message, user.username, 3));
+                    var res = command_base.chat(message, user.username, 3);
+                    if (res) {
+                        client.say(channel, res);
+                    }
                 }
                 if (user.mod == "false") {
-                    client.say(channel, command_base.chat(message, user.username, 1));
+                    var res = command_base.chat(message, user.username, 1);
+                    if (res) {
+                        client.say(channel, res);
+                    }
                 }
             }
         };
