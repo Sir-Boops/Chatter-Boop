@@ -36,10 +36,12 @@ var chat = function(user, pass, channel) {
         console.log("[Twitch][" + user.username + "] : " + message);
         if (!self) {
             //Get User Level
-            if (user.badges.broadcaster == "1") {
-                var res = command_base.chat(message, user.username, 4);
-                if (res) {
-                    client.say(channel, res);
+            if (user.badges) {
+                if (user.badges.broadcaster == "1") {
+                    var res = command_base.chat(message, user.username, 4);
+                    if (res) {
+                        client.say(channel, res);
+                    }
                 }
             } else {
                 if (user.mod == "true") {
@@ -55,7 +57,7 @@ var chat = function(user, pass, channel) {
                     }
                 }
             }
-        };
+        }
     });
 };
 
