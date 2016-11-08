@@ -1,12 +1,20 @@
 {
     "twitch": {
+        "enabled": true,
         "username": "",
         "oauth": "",
         "channel": ""
     },
     "beam": {
+        "enabled": true,
         "username": "",
         "password": "",
         "channelID": ""
+    },
+    "hitbox": {
+        "enabled": true,
+        "username": "",
+        "password": "",
+        "channel": ""
     }
 }

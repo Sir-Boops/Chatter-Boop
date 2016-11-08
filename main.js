@@ -9,10 +9,16 @@ var hitbox_chat = require("./clients/hitbox.js");
 var config = require("./config.json");
 
 //Start Twitch
-twitch_chat.chat(config.twitch.username, config.twitch.oauth, config.twitch.channel);
+if (config.twitch.enabled) {
+    twitch_chat.chat(config.twitch.username, config.twitch.oauth, config.twitch.channel);
+}
 
 //Start Beam
-beam_chat.chat(config.beam.username, config.beam.password, config.beam.channelID);
+if (config.beam.enabled) {
+    beam_chat.chat(config.beam.username, config.beam.password, config.beam.channelID);
+}
 
 //Start Hitbox
-hitbox_chat.chat(config.hitbox.username, config.hitbox.password, config.hitbox.channel);
+if (config.hitbox.enabled) {
+    hitbox_chat.chat(config.hitbox.username, config.hitbox.password, config.hitbox.channel);
+}

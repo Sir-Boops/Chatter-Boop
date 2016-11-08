@@ -13,7 +13,9 @@ var chat = function(user, password, chan) {
     client.on("connect", function() {
         // handle connect
         var channel = client.joinChannel(chan.toLowerCase());
-        channel.on("login", function(name, role) {})
+        channel.on("login", function(name, role) {
+            console.log("Hitbox Connected");
+        })
 
         channel.on("chat", function(name, message, role) {
             console.log("[Hitbox][" + name + "] : " + message);
