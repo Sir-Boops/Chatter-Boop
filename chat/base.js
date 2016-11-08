@@ -2,7 +2,9 @@
 
 //Command Imports
 var bot = require("./commands/bot.js");
-var command = require("./commands/command.js");
+var command_add = require("./commands/command/add.js");
+var command_modify = require("./commands/command/modify.js");
+var command_rm = require("./commands/command/rm.js");
 var custom_listener = require("./commands/custom_listener.js");
 
 var chat = function(message, user, ul) {
@@ -22,7 +24,15 @@ var chat = function(message, user, ul) {
 
     //The ~command Command
     if (message.split(/ /)[0].toLowerCase() == "~command" && ul > 3) {
-        return command.command(message, user, ul);
+        if (message.split(/ /)[1].toLowerCase() == "add") {
+            return command_add.command(message, user, ul);
+        }
+        if (message.split(/ /)[1].toLowerCase() == "modify") {
+            return command_modify.command(message, user, ul);
+        }
+        if (message.split(/ /)[1].toLowerCase() == "rm") {
+            return command_rm.command(message, user, ul);
+        }
     }
 
     //The Custom command listener
