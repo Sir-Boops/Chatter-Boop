@@ -43,7 +43,7 @@ var chat = function(user, pass, channel, logger) {
 			if (user.mod == "true") {
 				logger.log(JSON.stringify('{"rank":"3", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}'));
 			}
-			if (user.subscriber == "true") {
+			if (user.subscriber == "true" && user.mod != "true" && user.badges.broadcaster != "1") {
 				logger.log(JSON.stringify('{"rank":"2", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}'));
 			}
 			if (user.mod != 'true' && user.subscriber != 'true') {
