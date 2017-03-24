@@ -32,33 +32,25 @@ var chat = function(user, pass, channel, logger) {
 
 
     //Listen For Messages
-    client.on("chat", function(channel, user, message, self) {
-        logger.log("[Twitch][" + user.username + "] : " + message);
-        if (!self) {
-            //Get User Level
-            if (user.badges) {
-                if (user.badges.broadcaster == "1") {
-                    var res = command_base.chat(message, user.username, 4);
-                    if (res) {
-                        client.say(channel, res);
-                    }
-                }
-            } else {
-                if (user.mod == "true") {
-                    var res = command_base.chat(message, user.username, 3);
-                    if (res) {
-                        client.say(channel, res);
-                    }
-                }
-                if (user.mod == "false") {
-                    var res = command_base.chat(message, user.username, 1);
-                    if (res) {
-                        client.say(channel, res);
-                    }
-                }
-            }
-        }
-    });
+	client.on("chat", function(channel, user, message, self) {
+		logger.log("[Twitch][" + user.username + "] : " + message);
+		console.log(user);
+		if (!self) {
+			//Get User Level
+			if (user.badges && user.badges.broadcaster == "1") {
+				logger.log(JSON.stringify('{"rank":"4", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}'));
+			}
+			if (user.mod == "true") {
+				logger.log(JSON.stringify('{"rank":"3", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}'));
+			}
+			if (user.subscriber == "true") {
+				logger.log(JSON.stringify('{"rank":"2", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}'));
+			}
+			if (user.mod != 'true' && user.subscriber != 'true') {
+				logger.log(JSON.stringify('{"rank":"1", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}'));
+			}
+		}
+	});
 };
 
 //Export The function
