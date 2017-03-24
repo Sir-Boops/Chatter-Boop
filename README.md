@@ -1,7 +1,7 @@
 # Chatter-Boop
-## A Multi Platform Chat Moderation Bot
+## A Multi Platform Chat Moderation Bot Framework
 
-Chatter-Boop is a Multi-Platform chat moderation bot built to keep track of many chats at once while also not limiting one to any spefic chat
+Chatter-Boop is built to connect to many chats and simplify their output making it simple to write commands that work in all chats!
 
 ### Installation (On Linux)
 Make sure you fill in ```config.json``` before starting the bot!
