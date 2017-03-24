@@ -3,7 +3,7 @@ var BeamClient = require('beam-client-node');
 var BeamSocket = require('beam-client-node/lib/ws');
 var command_base = require('../chat/base.js');
 
-var chat = function(user, pass, channel) {
+var chat = function(user, pass, channel, logger) {
     //Setup and connect to Beam
     var client = new BeamClient();
 
@@ -32,7 +32,7 @@ var chat = function(user, pass, channel) {
         // we spool them and run them when connected automatically!
         socket.auth(channelId, userId, authkey)
             .then(() => {
-                console.log("Beam has connected");
+                logger.log("Beam has connected");
             })
             .catch(error => {
                 console.log('Oh no! An error occurred!', error);
@@ -40,7 +40,7 @@ var chat = function(user, pass, channel) {
 
         // Listen to chat messages, note that you will also receive your own!
         socket.on('ChatMessage', data => {
-            console.log("[Beam][" + data.user_name + "] : " + data.message.message[0].text);
+            logger.log("[Beam][" + data.user_name + "] : " + data.message.message[0].text);
 
             //Check if it's us sending the message
             if (data.user_name.toLowerCase() != user.toLowerCase()) {

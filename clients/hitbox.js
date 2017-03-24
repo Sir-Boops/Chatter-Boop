@@ -4,7 +4,7 @@ var command_base = require('../chat/base.js');
 var HitboxChatClient = require("hitbox-chat");
 
 //Setup the export
-var chat = function(user, password, chan) {
+var chat = function(user, password, chan, logger) {
 
     var client = new HitboxChatClient({
         name: user,
@@ -14,11 +14,11 @@ var chat = function(user, password, chan) {
         // handle connect
         var channel = client.joinChannel(chan.toLowerCase());
         channel.on("login", function(name, role) {
-            console.log("Hitbox Connected");
+		logger.log("Hitbox Connected");
         })
 
         channel.on("chat", function(name, message, role) {
-            console.log("[Hitbox][" + name + "] : " + message);
+            logger.log("[Hitbox][" + name + "] : " + message);
             if (role == "guest") {
                 var res = command_base.chat(message, name, 0);
                 if (res) {

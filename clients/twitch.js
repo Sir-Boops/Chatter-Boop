@@ -3,7 +3,7 @@ var tmi = require("tmi.js");
 var command_base = require('../chat/base.js');
 
 //Setup the export
-var chat = function(user, pass, channel) {
+var chat = function(user, pass, channel, logger) {
     //Setup The Client
     var options = {
         options: {
@@ -26,14 +26,14 @@ var chat = function(user, pass, channel) {
 
     //Once connected
     client.on("connected", function(address, port) {
-        console.log("Twitch has connected");
+        logger.log("Twitch has connected");
     });
 
 
 
     //Listen For Messages
     client.on("chat", function(channel, user, message, self) {
-        console.log("[Twitch][" + user.username + "] : " + message);
+        logger.log("[Twitch][" + user.username + "] : " + message);
         if (!self) {
             //Get User Level
             if (user.badges) {
