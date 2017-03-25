@@ -18,30 +18,17 @@ var chat = function(user, password, chan, logger) {
         })
 
         channel.on("chat", function(name, message, role) {
-            logger.log("[Hitbox][" + name + "] : " + message);
             if (role == "guest") {
-                var res = command_base.chat(message, name, 0);
-                if (res) {
-                    channel.sendMessage(res);
-                }
+		logger.log(JSON.stringify('{"rank":"0", "msg":"' + message + '", "name":"' + name + '", "UUID":"' + name.toLowerCase() + '"}'));
             }
             if (role == "anon") {
-                var res = command_base.chat(message, name, 1);
-                if (res) {
-                    channel.sendMessage(res);
-                }
+		logger.log(JSON.stringify('{"rank":"1", "msg":"' + message + '", "name":"' + name + '", "UUID":"' + name.toLowerCase() + '"}'));
             }
             if (role == "user") {
-                var res = command_base.chat(message, name, 3);
-                if (res) {
-                    channel.sendMessage(res);
-                }
+		logger.log(JSON.stringify('{"rank":"2", "msg":"' + message + '", "name":"' + name + '", "UUID":"' + name.toLowerCase() + '"}'));
             }
             if (role == "admin") {
-                var res = command_base.chat(message, name, 4);
-                if (res) {
-                    channel.sendMessage(res);
-                }
+		logger.log(JSON.stringify('{"rank":"4", "msg":"' + message + '", "name":"' + name + '", "UUID":"' + name.toLowerCase() + '"}'));
             }
         })
 
