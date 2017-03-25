@@ -51,38 +51,17 @@ var chat = function(user, pass, channel, logger) {
                     //Check For the owner tag
                     if (data.user_roles[i].toLowerCase() == "owner" && ul < 4) {
                         ul = 4;
-
-                        //Now Off to the handler
-                        if ((i + 1) >= i) {
-                            var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
-                            if (res) {
-                                return socket.call('msg', [res]);
-                            }
-                        }
+			logger.log(JSON.stringify('{"rank":"4", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}'));
                     }
                     //Check for mod
                     if (data.user_roles[i].toLowerCase() == "mod" && ul < 3) {
                         ul = 3;
-
-                        //Now Off to the handler
-                        if ((i + 1) >= i) {
-                            var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
-                            if (res) {
-                                return socket.call('msg', [res]);
-                            }
-                        }
+			logger.log(JSON.stringify('{"rank":"3", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}'));
                     }
                     //Check For user
                     if (data.user_roles[i].toLowerCase() == "user" && ul < 1) {
                         ul = 1;
-
-                        //Now Off to the handler
-                        if ((i + 1) >= i) {
-                            var res = command_base.chat(data.message.message[0].text, data.user_name, ul);
-                            if (res) {
-                                return socket.call('msg', [res]);
-                            }
-                        }
+			logger.log(JSON.stringify('{"rank":"1", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}'));
                     }
                 }
             };
