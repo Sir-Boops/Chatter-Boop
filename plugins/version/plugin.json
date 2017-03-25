@@ -1,0 +1,6 @@
+{
+	"name":"version",
+	"desc":"Print the current version",
+	"main_file":"main.js",
+	"command":"~version"
+}

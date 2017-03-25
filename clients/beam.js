@@ -32,7 +32,7 @@ var chat = function(user, pass, channel, logger) {
         // we spool them and run them when connected automatically!
         socket.auth(channelId, userId, authkey)
             .then(() => {
-                logger.log("Beam has connected");
+                logger("Beam has connected");
             })
             .catch(error => {
                 console.log('Oh no! An error occurred!', error);
@@ -40,7 +40,7 @@ var chat = function(user, pass, channel, logger) {
 
         // Listen to chat messages, note that you will also receive your own!
         socket.on('ChatMessage', data => {
-            logger.log("[Beam][" + data.user_name + "] : " + data.message.message[0].text);
+            logger("[Beam][" + data.user_name + "] : " + data.message.message[0].text);
 
             //Check if it's us sending the message
             if (data.user_name.toLowerCase() != user.toLowerCase()) {
@@ -51,17 +51,20 @@ var chat = function(user, pass, channel, logger) {
                     //Check For the owner tag
                     if (data.user_roles[i].toLowerCase() == "owner" && ul < 4) {
                         ul = 4;
-			logger.log(JSON.stringify('{"rank":"4", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}'));
+			var ans = logger('{"rank":"4", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}');
+			if (ans) { return socket.call('msg', [ans]); };
                     }
                     //Check for mod
                     if (data.user_roles[i].toLowerCase() == "mod" && ul < 3) {
                         ul = 3;
-			logger.log(JSON.stringify('{"rank":"3", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}'));
+			var ans = logger('{"rank":"3", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}');
+			if (ans) { return socket.call('msg', [ans]); };
                     }
                     //Check For user
                     if (data.user_roles[i].toLowerCase() == "user" && ul < 1) {
                         ul = 1;
-			logger.log(JSON.stringify('{"rank":"1", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}'));
+			var ans = logger('{"rank":"1", "msg":"' + data.message.message[0].text + '", "name":"' + data.user_name + '", "UUID":"' + data.user_id + '"}');
+			if (ans) { return socket.call('msg', [ans]); };
                     }
                 }
             };
