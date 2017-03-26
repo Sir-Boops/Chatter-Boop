@@ -6,9 +6,10 @@ Chatter-Boop is built to connect to many chats and simplify their output making 
 ### Installation (On Linux)
 Make sure you fill in ```config.json``` before starting the bot!
 ```sh
-$ git clone https://git.frgl.pw/Sir_Boops/Chatter-Boop.git
+$ wget https://git.frgl.pw/Sir_Boops/Chatter-Boop/archive/<latest release version here>.tar.gz
+$ tar -xvaf <latest release version here>.tar.gz
 $ cd Chatter-Boop/
-& cp config.example.json config.json
+$ cp doc/config.example.json config.json
 $ npm install
 $ node main.js
 ```
