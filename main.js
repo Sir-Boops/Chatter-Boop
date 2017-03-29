@@ -32,6 +32,7 @@ for(var i = 0; i < plugins_to_load.length; i++) {
 	var new_arr = "";
 	new_arr += (plugin_json.command + ':');
 	new_arr += ('./plugins/' + plugins_to_load[i] + '/' + plugin_json.main_file + ':');
+	new_arr += ('./plugins/' + plugins_to_load[i] + '/' + ':');
 	plugins.push(new_arr);
 };
 
@@ -69,7 +70,7 @@ function logger(msg) {
 		for(var i = 0; i < plugins.length; i++) {
 			if(plugins[i].split(":")[0].toLowerCase() == string.msg.split(" ")[0].toLowerCase()) {
 				var func = require(plugins[i].split(":")[1]);
-				return func.main(msg);
+				return func.main(msg, plugins[i].split(':')[2]);
 			};
 		};
 	};
