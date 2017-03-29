@@ -1,7 +1,6 @@
 //Node-JS Imports
 var BeamClient = require('beam-client-node');
 var BeamSocket = require('beam-client-node/lib/ws');
-var command_base = require('../chat/base.js');
 
 var chat = function(user, pass, channel, logger) {
     //Setup and connect to Beam

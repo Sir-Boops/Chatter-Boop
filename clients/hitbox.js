@@ -1,6 +1,5 @@
 //Node-JS Imports
 var request = require('request');
-var command_base = require('../chat/base.js');
 var HitboxChatClient = require("hitbox-chat");
 
 //Setup the export

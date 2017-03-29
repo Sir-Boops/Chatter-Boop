@@ -1,6 +1,5 @@
 //Node-JS Imports
 var tmi = require("tmi.js");
-var command_base = require('../chat/base.js');
 
 //Setup the export
 var chat = function(user, pass, channel, logger) {
