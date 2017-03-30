@@ -68,7 +68,7 @@ function logger(msg) {
 		var string = JSON.parse(msg);
 		// Check for command
 		for(var i = 0; i < plugins.length; i++) {
-			if(plugins[i].split(":")[0].toLowerCase() == string.msg.split(" ")[0].toLowerCase()) {
+			if(plugins[i].split(":")[0].toLowerCase() == string.msg.split(" ")[0].toLowerCase() || plugins[i].split(":")[0].toLowerCase() == '*') {
 				var func = require(plugins[i].split(":")[1]);
 				return func.main(msg, plugins[i].split(':')[2]);
 			};
