@@ -36,19 +36,19 @@ var chat = function(user, pass, channel, logger) {
 		if (!self) {
 			//Get User Level
 			if (user.badges && user.badges.broadcaster == "1") {
-				var ans = logger('{"rank":"4", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}');
+				var ans = logger(JSON.stringify({rank: 4, msg: message, name: user['display-name'], UUID: user['user-id']}));
 				if (ans) { client.say(channel, ans); };
 			}
 			if (user.mod == "true") {
-				var ans = logger('{"rank":"3", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}');
+				var ans = logger(JSON.stringify({rank: 3, msg: message, name: user['display-name'], UUID: user['user-id']}));
 				if (ans) { client.say(channel, ans); };
 			}
 			if (user.subscriber == "true" && user.mod != "true" && user.badges.broadcaster != "1") {
-				var ans = logger('{"rank":"2", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}');
+				var ans = logger(JSON.stringify({rank: 2, msg: message, name: user['display-name'], UUID: user['user-id']}));
 				if (ans) { client.say(channel, ans); };
 			}
 			if (user.mod != 'true' && user.subscriber != 'true' && !user.badges) {
-				var ans = logger('{"rank":"1", "msg":"' + message + '", "name":"' + user['display-name'] + '", "UUID":"' + user['user-id']  + '"}');
+				var ans = logger(JSON.stringify({rank: 1, msg: message, name: user['display-name'], UUID: user['user-id']}));
 				if (ans) { client.say(channel, ans); };
 			}
 		}

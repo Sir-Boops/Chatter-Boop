@@ -17,22 +17,22 @@ var chat = function(user, password, chan, logger) {
         })
 
         channel.on("chat", function(name, message, role) {
-		logger('[Hitbox][' + name  + ']:' + message);
+		logger('[Hitbox][' + name  + '] : ' + message);
 		if (name.toLowerCase() != user.toLowerCase()) {
 			if (role == "guest") {
-				var ans = logger('{"rank":"0", "msg":"' + message + '", "name":"' + name + '", "UUID":"' + name.toLowerCase() + '"}');
+				var ans = logger(JSON.stringify({rank: 0, msg: message, name: name, UUID: name.toLowerCase()}));
 				if (ans) { channel.sendMessage(ans) };
 			}
 			if (role == "anon") {
-				var ans = logger('{"rank":"1", "msg":"' + message + '", "name":"' + name + '", "UUID":"' + name.toLowerCase() + '"}');
+				var ans = logger(JSON.stringify({rank: 1, msg: message, name: name, UUID: name.toLowerCase()}));
 				if (ans) { channel.sendMessage(ans) };
 			}
 			if (role == "user") {
-				var ans = logger('{"rank":"2", "msg":"' + message + '", "name":"' + name + '", "UUID":"' + name.toLowerCase() + '"}');
+				var ans = logger(JSON.stringify({rank: 2, msg: message, name: name, UUID: name.toLowerCase()}));
 				if (ans) { channel.sendMessage(ans) };
 			}
 			if (role == "admin") {
-				var ans = logger('{"rank":"4", "msg":"' + message + '", "name":"' + name + '", "UUID":"' + name.toLowerCase() + '"}');
+				var ans = logger(JSON.stringify({rank: 4, msg: message, name: name, UUID: name.toLowerCase()}));
 				if (ans) { channel.sendMessage(ans) }
 			}
 		}
