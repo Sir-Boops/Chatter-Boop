@@ -2,7 +2,7 @@
 var fs = require('fs');
 
 //Node-JS Internal Imports
-var twitch_chat = require("./clients/twitch.js");
+var twitch_chat = require("./clients/twitch_new.js");
 var beam_chat = require("./clients/beam.js");
 var hitbox_chat = require("./clients/hitbox.js");
 var log = require('./functions/logger.js');
@@ -50,7 +50,6 @@ if (config.beam.enabled) {
 if (config.hitbox.enabled) {
 	hitbox_chat.chat(config.hitbox.username, config.hitbox.password, config.hitbox.channel, logger);
 }
-
 
 // Message parser
 function logger(msg) {

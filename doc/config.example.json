@@ -1,20 +1,27 @@
 {
-    "twitch": {
-        "enabled": true,
-        "username": "",
-        "oauth": "",
-        "channel": ""
-    },
-    "beam": {
-        "enabled": true,
-        "username": "",
-        "password": "",
-        "channelID": ""
-    },
-    "hitbox": {
-        "enabled": true,
-        "username": "",
-        "password": "",
-        "channel": ""
-    }
+"	twitch": {
+		"enabled": true,
+		"username": "",
+		"oauth": "",
+		"channel": ""
+	},
+	"beam": {
+		"enabled": true,
+		"username": "",
+		"password": "",
+		"channelID": ""
+	},
+	"hitbox": {
+		"enabled": true,
+		"username": "",
+		"password": "",
+		"channel": ""
+	},
+	"youtube": {
+		"enabled": true,
+		"client_id":"",
+		"client_sec":"",
+		"access_token":"",
+		"chatid":""
+	}
 }

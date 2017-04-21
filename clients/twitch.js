@@ -29,6 +29,11 @@ var chat = function(user, pass, channel, logger) {
     });
 
 
+	var push = function(msg, channel) {
+		client.say(channel, msg);
+	}
+
+
 
     //Listen For Messages
 	client.on("chat", function(channel, user, message, self) {
@@ -57,3 +62,4 @@ var chat = function(user, pass, channel, logger) {
 
 //Export The function
 module.exports.chat = chat;
+module.exports.push = push;
