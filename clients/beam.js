@@ -2,7 +2,7 @@
 var BeamClient = require('beam-client-node');
 var BeamSocket = require('beam-client-node/lib/ws');
 
-var chat = function(user, pass, channel, logger) {
+var chat = function(user, pass, channel, logger, plugins, api) {
     //Setup and connect to Beam
     var client = new BeamClient();
 
@@ -31,7 +31,7 @@ var chat = function(user, pass, channel, logger) {
         // we spool them and run them when connected automatically!
         socket.auth(channelId, userId, authkey)
             .then(() => {
-                logger("Beam has connected");
+                logger.log("[Beam] : Client has connected to Beam.pro");
             })
             .catch(error => {
                 console.log('Oh no! An error occurred!', error);
@@ -39,7 +39,7 @@ var chat = function(user, pass, channel, logger) {
 
         // Listen to chat messages, note that you will also receive your own!
         socket.on('ChatMessage', data => {
-            logger("[Beam][" + data.user_name + "] : " + data.message.message[0].text);
+            logger.log("[Beam][" + data.user_name + "] : " + data.message.message[0].text);
 
             //Check if it's us sending the message
             if (data.user_name.toLowerCase() != user.toLowerCase()) {
@@ -50,19 +50,19 @@ var chat = function(user, pass, channel, logger) {
                     //Check For the owner tag
                     if (data.user_roles[i].toLowerCase() == "owner" && ul < 4) {
                         ul = 4;
-			var ans = logger(JSON.stringify({rank: 4, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}));
+			var ans = api.trigger(JSON.stringify({rank: 4, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}), logger, plugins);
 			if (ans) { return socket.call('msg', [ans]); };
                     }
                     //Check for mod
                     if (data.user_roles[i].toLowerCase() == "mod" && ul < 3) {
                         ul = 3;
-			var ans = logger(JSON.stringify({rank: 3, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}));
+			var ans = api.trigger(JSON.stringify({rank: 3, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}), logger, plugins);
 			if (ans) { return socket.call('msg', [ans]); };
                     }
                     //Check For user
                     if (data.user_roles[i].toLowerCase() == "user" && ul < 1) {
                         ul = 1;
-			var ans = logger(JSON.stringify({rank: 1, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}));
+			var ans = api.trigger(JSON.stringify({rank: 1, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}), logger, plugins);
 			if (ans) { return socket.call('msg', [ans]); };
                     }
                 }
