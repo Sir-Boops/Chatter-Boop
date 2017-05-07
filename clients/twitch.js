@@ -47,22 +47,22 @@ var listen_chat = function(logger, api, plugins) {
 
 				// Translate to json string and send to
 				// the API function
-				var ans = api.trigger(JSON.stringify({rank: 4, msg: message, name: user['display-name'], UUID: user['user-id']}), logger, plugins);
+				var ans = api.trigger(JSON.stringify({rank: 4, msg: message, name: user['display-name'], UUID: user['user-id'], platform: "twitch"}), logger, plugins);
 				if (ans) { client.say(channel, ans); };
 			};
 
 			if (user.mod == "true") {
-				var ans = api.trigger(JSON.stringify({rank: 3, msg: message, name: user['display-name'], UUID: user['user-id']}), logger, plugins);
+				var ans = api.trigger(JSON.stringify({rank: 3, msg: message, name: user['display-name'], UUID: user['user-id'], platform: "twitch"}), logger, plugins);
 				if (ans) { client.say(channel, ans); };
 			};
 
 			if (user.subscriber == "true" && user.mod != "true" && user.badges.broadcaster != "1") {
-				var ans = api.trigger(JSON.stringify({rank: 2, msg: message, name: user['display-name'], UUID: user['user-id']}), logger, plugins);
+				var ans = api.trigger(JSON.stringify({rank: 2, msg: message, name: user['display-name'], UUID: user['user-id'], platform: "twitch"}), logger, plugins);
 				if (ans) { client.say(channel, ans); };
 			};
 
 			if (user.mod != 'true' && user.subscriber != 'true' && !user.badges) {
-				var ans = api.trigger(JSON.stringify({rank: 1, msg: message, name: user['display-name'], UUID: user['user-id']}), logger, plugins);
+				var ans = api.trigger(JSON.stringify({rank: 1, msg: message, name: user['display-name'], UUID: user['user-id'], platform: "twitch"}), logger, plugins);
 				if (ans) { client.say(channel, ans); };
 			};
 		};

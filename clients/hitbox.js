@@ -21,19 +21,19 @@ var chat = function(user, password, chan, logger, plugins, api) {
 		logger.log('[Hitbox][' + name  + '] : ' + message);
 		if (name.toLowerCase() != user.toLowerCase()) {
 			if (role == "guest") {
-				var ans = api.trigger(JSON.stringify({rank: 0, msg: message, name: name, UUID: name.toLowerCase()}), logger, plugins);
+				var ans = api.trigger(JSON.stringify({rank: 0, msg: message, name: name, UUID: name.toLowerCase(), platform: "hitbox"}), logger, plugins);
 				if (ans) { channel.sendMessage(ans) };
 			}
 			if (role == "anon") {
-				var ans = api.trigger(JSON.stringify({rank: 1, msg: message, name: name, UUID: name.toLowerCase()}), logger, plugins);
+				var ans = api.trigger(JSON.stringify({rank: 1, msg: message, name: name, UUID: name.toLowerCase(), platform: "hitbox"}), logger, plugins);
 				if (ans) { channel.sendMessage(ans) };
 			}
 			if (role == "user") {
-				var ans = api.trigger(JSON.stringify({rank: 2, msg: message, name: name, UUID: name.toLowerCase()}), logger, plugins);
+				var ans = api.trigger(JSON.stringify({rank: 2, msg: message, name: name, UUID: name.toLowerCase(), platform: "hitbox"}), logger, plugins);
 				if (ans) { channel.sendMessage(ans) };
 			}
 			if (role == "admin") {
-				var ans = api.trigger(JSON.stringify({rank: 4, msg: message, name: name, UUID: name.toLowerCase()}), logger, plugins);
+				var ans = api.trigger(JSON.stringify({rank: 4, msg: message, name: name, UUID: name.toLowerCase(), platform: "hitbox"}), logger, plugins);
 				if (ans) { channel.sendMessage(ans) }
 			}
 		}

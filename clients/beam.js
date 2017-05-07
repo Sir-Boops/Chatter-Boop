@@ -50,19 +50,19 @@ var chat = function(user, pass, channel, logger, plugins, api) {
                     //Check For the owner tag
                     if (data.user_roles[i].toLowerCase() == "owner" && ul < 4) {
                         ul = 4;
-			var ans = api.trigger(JSON.stringify({rank: 4, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}), logger, plugins);
+			var ans = api.trigger(JSON.stringify({rank: 4, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id, platform: "beam"}), logger, plugins);
 			if (ans) { return socket.call('msg', [ans]); };
                     }
                     //Check for mod
                     if (data.user_roles[i].toLowerCase() == "mod" && ul < 3) {
                         ul = 3;
-			var ans = api.trigger(JSON.stringify({rank: 3, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}), logger, plugins);
+			var ans = api.trigger(JSON.stringify({rank: 3, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id, platform: "beam"}), logger, plugins);
 			if (ans) { return socket.call('msg', [ans]); };
                     }
                     //Check For user
                     if (data.user_roles[i].toLowerCase() == "user" && ul < 1) {
                         ul = 1;
-			var ans = api.trigger(JSON.stringify({rank: 1, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id}), logger, plugins);
+			var ans = api.trigger(JSON.stringify({rank: 1, msg: data.message.message[0].text, name: data.user_name, UUID: data.user_id, platform: "beam"}), logger, plugins);
 			if (ans) { return socket.call('msg', [ans]); };
                     }
                 }
