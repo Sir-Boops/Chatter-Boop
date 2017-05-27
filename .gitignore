@@ -2,3 +2,7 @@ node_modules/*
 config.json
 custom_commands
 *.swp
+.classpath
+.settings
+.project
+target/
