@@ -7,6 +7,8 @@ import java.util.concurrent.Future;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -18,7 +20,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import me.boops.chatterboops.Config;
-import me.boops.chatterboops.Mixer.MixerEvents;
 
 public class Mixer {
 	
@@ -34,8 +35,6 @@ public class Mixer {
 		
 		String authKey = authNURL[0];
 		String chatURL = authNURL[1];
-		
-		System.out.println(chatURL);
 		
 		WebSocketClient sockWebSocket = new WebSocketClient(new SslContextFactory());
 		sockWebSocket.start();
@@ -55,8 +54,6 @@ public class Mixer {
 		login.put("id", 0);
 		login.put("arguments", args);
 		
-		System.out.println(login);
-		
 		session.getRemote().sendString(login.toString());
 		
 	}
@@ -66,7 +63,8 @@ public class Mixer {
 	private int getUserID(String authToken) throws Exception {
 		
 		// Get Bot UserID
-		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
 		HttpGet get = new HttpGet("https://mixer.com/api/v1/users/current");
 		get.addHeader("Authorization", "Bearer " + authToken);
 		
@@ -82,7 +80,8 @@ public class Mixer {
 	private String[] setupChat(String authToken, int uderID) throws Exception {
 		
 		// Get the chat auth token
-		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
 		HttpGet get = new HttpGet("https://mixer.com/api/v1/chats/32238");
 		get.addHeader("Authorization", "Bearer " + authToken);
 		
