@@ -1,4 +1,4 @@
-package me.boops.chatterboops;
+package me.boops.chatterboops.Twitch;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+import me.boops.chatterboops.Config;
 import me.boops.chatterboops.parsers.TwitchParser;
 
 public class Twitch {

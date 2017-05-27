@@ -1,4 +1,4 @@
-package me.boops.chatterboops;
+package me.boops.chatterboops.Smash;
 
 import java.net.URI;
 import java.util.Random;
@@ -17,6 +17,8 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import me.boops.chatterboops.Config;
 
 public class Smash {
 	

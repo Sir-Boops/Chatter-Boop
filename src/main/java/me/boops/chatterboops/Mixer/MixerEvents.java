@@ -1,4 +1,4 @@
-package me.boops.chatterboops;
+package me.boops.chatterboops.Mixer;
 
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.json.JSONObject;

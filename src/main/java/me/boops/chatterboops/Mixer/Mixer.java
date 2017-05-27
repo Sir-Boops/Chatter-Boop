@@ -1,4 +1,4 @@
-package me.boops.chatterboops;
+package me.boops.chatterboops.Mixer;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,6 +16,9 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import me.boops.chatterboops.Config;
+import me.boops.chatterboops.Mixer.MixerEvents;
 
 public class Mixer {
 	

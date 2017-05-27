@@ -1,5 +1,8 @@
 package me.boops.chatterboops;
 
+import me.boops.chatterboops.Mixer.Mixer;
+import me.boops.chatterboops.Smash.Smash;
+
 public class Main {
 	
 	public static void main(String[] args) throws Exception {

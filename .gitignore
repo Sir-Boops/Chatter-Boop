@@ -6,3 +6,4 @@ custom_commands
 .settings
 .project
 target/
+dependency-reduced-pom.xml
