@@ -1,6 +1,6 @@
 package me.boops.chatterboops;
 
-import me.boops.chatterboops.Mixer.Mixer;
+import me.boops.chatterboops.Twitch.Twitch;
 
 public class Main {
 	
@@ -18,7 +18,7 @@ public class Main {
 				
 				try {
 
-					//new Twitch(conf);
+					new Twitch(conf);
 					
 				} catch (Exception e){
 					e.printStackTrace();
@@ -33,7 +33,7 @@ public class Main {
 				
 				try {
 					
-					new Mixer(conf);
+					//new Mixer(conf);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -13,7 +13,7 @@ import me.boops.chatterboops.parsers.TwitchParser;
 
 public class Twitch {
 	
-	private BufferedWriter writeStream;
+	private static BufferedWriter writeStream;
 	
 	public Twitch(Config conf) throws Exception{
 		
@@ -23,22 +23,31 @@ public class Twitch {
 		writeStream = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 		BufferedReader readStream = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		
-		sendMSG("PASS " + conf.getTwitchOauth());
-		sendMSG("NICK " + conf.getTwitchOauth());
+		sendRaw("PASS " + conf.getTwitchOauth());
+		sendRaw("NICK " + conf.getTwitchOauth());
 		
-		sendMSG("JOIN #sir_boops");
+		sendRaw("JOIN #sir_boops");
+		sendRaw("CAP REQ :twitch.tv/tags");
 					
 		String line = null;
 		while((line = readStream.readLine()) != null){
-			new TwitchParser(line.toString(), this);
+			new TwitchParser(line.toString());
 		}		
 	}
 	
 	
 	// Write to chat
-	public void sendMSG(String msg) throws Exception{
+	public static void sendRaw(String msg) throws Exception{
 			
 		writeStream.write(msg + "\r\n");
+		writeStream.flush();
+		
+	}
+	
+	// Write to chat
+	public static void sendMSG(String msg) throws Exception{
+			
+		writeStream.write("PRIVMSG #sir_boops" + msg + "\r\n");
 		writeStream.flush();
 		
 	}
