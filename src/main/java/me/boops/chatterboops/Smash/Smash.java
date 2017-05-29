@@ -18,6 +18,9 @@ import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import io.socket.client.IO;
+import io.socket.client.Manager;
+import io.socket.client.Socket;
 import me.boops.chatterboops.Config;
 
 public class Smash {
@@ -39,7 +42,7 @@ public class Smash {
 		sockWebSocket.start();
 		SmashEvents socket = new SmashEvents();
 		Future<Session> fut = sockWebSocket.connect(socket, URI.create(serverIP));
-		session = fut.get();
+		//session = fut.get();
 		
 		JSONObject join = new JSONObject();
 		JSONObject params = new JSONObject();
@@ -53,7 +56,11 @@ public class Smash {
 		
 		join.put("params", params);
 		
-		session.getRemote().sendString(join.toString());
+		//session.getRemote().sendString(join.toString());
+		
+		Socket socket2 = IO.socket(serverIP);
+		socket2.connect();
+		
 		
 	}
 	
@@ -90,7 +97,7 @@ public class Smash {
 		String meta = new BasicResponseHandler().handleResponse(res);
 		JSONArray json = new JSONArray(meta);
 		
-		String url = ("wss://" + json.getJSONObject(rand.nextInt(json.length())).getString("server_ip"));
+		String url = ("https://" + json.getJSONObject(rand.nextInt(json.length())).getString("server_ip"));
 		
 		return url;
 		

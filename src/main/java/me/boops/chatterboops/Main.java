@@ -1,6 +1,7 @@
 package me.boops.chatterboops;
 
-import me.boops.chatterboops.Twitch.Twitch;
+import me.boops.chatterboops.Smash.Smash;
+import me.boops.chatterboops.Youtube.Youtube;
 
 public class Main {
 	
@@ -18,7 +19,7 @@ public class Main {
 				
 				try {
 
-					new Twitch(conf);
+					//new Twitch(conf);
 					
 				} catch (Exception e){
 					e.printStackTrace();
@@ -50,6 +51,22 @@ public class Main {
 				try {
 					
 					//new Smash(conf);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}).start();
+		
+		// Launch the Youtube client
+		new Thread(new Runnable(){
+			
+			public void run(){
+				
+				try {
+					
+					new Youtube(conf);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

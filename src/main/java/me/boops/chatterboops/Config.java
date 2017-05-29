@@ -23,6 +23,14 @@ public class Config {
 	private String smashName;
 	private String smashPass;
 	
+	// Youtube Strings
+	private boolean enableYoutube;
+	private String youtubeClientID;
+	private String youtubeClientSec;
+	private String youtubeToken;
+	private String youtubeChatID;
+	private String youtubeBotChannelID;
+	
 	public Config(){
 		
 		StringBuilder sb = new StringBuilder();
@@ -58,6 +66,14 @@ public class Config {
 		this.enableSmash = config.getJSONObject("smash").getBoolean("enable");
 		this.smashName = config.getJSONObject("smash").getString("user");
 		this.smashPass = config.getJSONObject("smash").getString("pass");
+		
+		// Get Youtube strings
+		this.enableTwitch = config.getJSONObject("youtube").getBoolean("enable");
+		this.youtubeClientID = config.getJSONObject("youtube").getString("clientID");
+		this.youtubeClientSec = config.getJSONObject("youtube").getString("clientSec");
+		this.youtubeToken = config.getJSONObject("youtube").getString("token");
+		this.youtubeChatID = config.getJSONObject("youtube").getString("chatID");
+		this.youtubeBotChannelID = config.getJSONObject("youtube").getString("botChannelID");
 		
 	}
 	
@@ -97,6 +113,31 @@ public class Config {
 	
 	public String getSmashPass(){
 		return this.smashPass;
+	}
+	
+	// Return Youtube strings
+	public boolean enableYoutube(){
+		return this.enableYoutube;
+	}
+	
+	public String getYoutubeClientID(){
+		return this.youtubeClientID;
+	}
+	
+	public String getYoutubeClientSec(){
+		return this.youtubeClientSec;
+	}
+	
+	public String getYoutubeToken(){
+		return this.youtubeToken;
+	}
+	
+	public String getYoutubeChatID() {
+		return this.youtubeChatID;
+	}
+	
+	public String getYoutubeBotChannelID(){
+		return this.youtubeBotChannelID;
 	}
 	
 }
