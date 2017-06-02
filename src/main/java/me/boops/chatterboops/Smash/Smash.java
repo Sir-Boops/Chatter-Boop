@@ -1,8 +1,6 @@
 package me.boops.chatterboops.Smash;
 
-import java.net.URI;
 import java.util.Random;
-import java.util.concurrent.Future;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -12,15 +10,9 @@ import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClients;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import io.socket.client.IO;
-import io.socket.client.Manager;
-import io.socket.client.Socket;
 import me.boops.chatterboops.Config;
 
 public class Smash {
@@ -28,39 +20,29 @@ public class Smash {
 	// Random
 	Random rand = new Random();
 	
-	private Session session;
-	
 	public Smash(Config conf) throws Exception {
 		
 		// Get Oauth Token
 		String authToken = oauthToken(conf.getSmashName(), conf.getSmashPass());
 		
-		// Get a server IP
+		//Get the server IP
 		String serverIP = getServer();
 		
-		WebSocketClient sockWebSocket = new WebSocketClient(new SslContextFactory());
-		sockWebSocket.start();
-		SmashEvents socket = new SmashEvents();
-		Future<Session> fut = sockWebSocket.connect(socket, URI.create(serverIP));
-		//session = fut.get();
-		
-		JSONObject join = new JSONObject();
+		// Create the login msg
+		JSONObject main = new JSONObject();
 		JSONObject params = new JSONObject();
 		
-		join.put("method", "joinChannel");
+		main.put("method", "joinChannel");
 		
 		params.put("channel", "sirboops");
 		params.put("name", conf.getSmashName());
 		params.put("token", authToken);
 		params.put("hideBuffered", true);
 		
-		join.put("params", params);
+		main.put("params", params);
 		
-		//session.getRemote().sendString(join.toString());
-		
-		Socket socket2 = IO.socket(serverIP);
-		socket2.connect();
-		
+		// Connect here
+		// This needs a good socketIO lib
 		
 	}
 	
@@ -97,7 +79,7 @@ public class Smash {
 		String meta = new BasicResponseHandler().handleResponse(res);
 		JSONArray json = new JSONArray(meta);
 		
-		String url = ("https://" + json.getJSONObject(rand.nextInt(json.length())).getString("server_ip"));
+		String url = ("" + json.getJSONObject(rand.nextInt(json.length())).getString("server_ip"));
 		
 		return url;
 		

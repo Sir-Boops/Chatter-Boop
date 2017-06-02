@@ -25,7 +25,6 @@ public class YoutubeParser {
 		ans.put("raw", msg.toString());
 		
 		new API(ans);
-		Youtube.sendMessage("Hi!");
 		
 	}
 }

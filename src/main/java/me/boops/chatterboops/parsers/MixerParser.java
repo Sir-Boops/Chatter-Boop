@@ -7,7 +7,7 @@ import me.boops.chatterboops.API;
 
 public class MixerParser {
 	
-	public MixerParser(JSONObject msg){
+	public MixerParser(JSONObject msg) throws Exception {
 		
 		// Check if it is an event
 		if(msg.has("event")){
@@ -70,7 +70,7 @@ public class MixerParser {
 		}
 		
 		ans.put("userLevel", userLevel);
-		ans.put("user_name", msg.getJSONObject("data").getString("user_name"));
+		ans.put("userName", msg.getJSONObject("data").getString("user_name"));
 		ans.put("UUID", msg.getJSONObject("data").getInt("user_id"));
 		ans.put("platform", "mixer");
 		ans.put("raw", msg.toString());

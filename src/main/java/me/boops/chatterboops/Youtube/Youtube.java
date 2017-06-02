@@ -173,7 +173,7 @@ public class Youtube {
 		
 	}
 	
-	public static void sendMessage(String msg) throws Exception{
+	public static void sendMSG(String msg) throws Exception{
 		
 		JSONObject body = new JSONObject();
 		JSONObject snippet = new JSONObject();

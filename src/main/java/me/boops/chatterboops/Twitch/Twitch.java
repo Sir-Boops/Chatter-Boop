@@ -45,9 +45,9 @@ public class Twitch {
 	}
 	
 	// Write to chat
-	public static void sendMSG(String msg) throws Exception{
+	public static void sendMSG(String msg) throws Exception {
 			
-		writeStream.write("PRIVMSG #sir_boops" + msg + "\r\n");
+		writeStream.write("PRIVMSG #sir_boops :" + msg + "\r\n");
 		writeStream.flush();
 		
 	}
