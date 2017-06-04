@@ -35,9 +35,15 @@ public class TwitchParser {
 			ans.put("msg", realMSG);
 			ans.put("userLevel", userLevel);
 			ans.put("userName", name);
-			ans.put("UUID", tags.split(";")[11].replaceFirst("user-id=", ""));
 			ans.put("platform", "twitch");
 			ans.put("raw", msg);
+			
+			if(userLevel == 5){
+				ans.put("UUID", tags.split(";")[11].replaceFirst("user-id=", ""));
+			} else {
+				ans.put("UUID", tags.split(";")[10].replaceFirst("user-id=", ""));
+			}
+			
 			
 			new API(ans);
 			
