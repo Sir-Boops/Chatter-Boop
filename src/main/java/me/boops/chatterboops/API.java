@@ -3,6 +3,7 @@ package me.boops.chatterboops;
 import org.json.JSONObject;
 
 import me.boops.chatterboops.commands.boop.BoopCommand;
+import me.boops.chatterboops.commands.command.CommandCommand;
 
 public class API {
 	
@@ -11,6 +12,7 @@ public class API {
 		
 		// 'Plugins'
 		new BoopCommand(msg);
+		new CommandCommand(msg);
 		
 		System.out.println(msg);
 		

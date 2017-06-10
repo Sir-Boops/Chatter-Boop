@@ -7,3 +7,4 @@ custom_commands
 .project
 target/
 dependency-reduced-pom.xml
+DBs/
