@@ -44,22 +44,6 @@ public class Main {
 			}
 		}).start();
 		
-		// Launch the Smash client
-		new Thread(new Runnable(){
-			
-			public void run(){
-				
-				try {
-					
-					//new Smash(conf);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-			}
-		}).start();
-		
 		// Launch the Youtube client
 		new Thread(new Runnable(){
 			
