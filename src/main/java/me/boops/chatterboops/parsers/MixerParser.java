@@ -16,7 +16,12 @@ public class MixerParser {
 			if (msg.getString("event").toLowerCase().equals("chatmessage")){
 				
 				// Send the parsed message off to the API
-				new API(cleanMessage(msg));
+				// And check if it's a bot message
+				JSONObject ans = cleanMessage(msg);
+				
+				if(ans != null){
+					new API(ans);
+				}
 				
 			}
 			
@@ -75,7 +80,11 @@ public class MixerParser {
 		ans.put("platform", "mixer");
 		ans.put("raw", msg.toString());
 		
-		return ans;
+		if(!msg.getJSONObject("data").getString("user_name").toLowerCase().equals("boop_bot")){
+			return ans;
+		} else {
+			return null;
+		}
 	}
 	
 }

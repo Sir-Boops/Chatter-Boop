@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import me.boops.chatterboops.commands.boop.BoopCommand;
 import me.boops.chatterboops.commands.command.CommandCommand;
+import me.boops.chatterboops.commands.logger.FileLogger;
 
 public class API {
 	
@@ -13,6 +14,7 @@ public class API {
 		// 'Plugins'
 		new BoopCommand(msg);
 		new CommandCommand(msg);
+		new FileLogger(msg);
 		
 		System.out.println(msg);
 		

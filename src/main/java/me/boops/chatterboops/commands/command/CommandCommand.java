@@ -73,8 +73,6 @@ public class CommandCommand {
 			
 			JSONObject body = DB.getEntry(msg.getString("msg").split(" ")[0].toLowerCase());
 			
-			System.out.println(msg.getString("msg").split(" ")[0].toLowerCase());
-			
 			if(body != null){
 				
 				new SendMSG(body.getString("msg"), msg.getString("platform"));
