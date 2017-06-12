@@ -91,7 +91,6 @@ public class Youtube {
 			
 			Thread.sleep(3500 * 1000);
 			authKey = getOauthToken();
-			System.out.println(authKey);
 			
 		}
 		

@@ -38,12 +38,17 @@ public class TwitchParser {
 			ans.put("platform", "twitch");
 			ans.put("raw", msg);
 			
-			if(userLevel == 5){
-				ans.put("UUID", tags.split(";")[11].replaceFirst("user-id=", ""));
-			} else {
-				ans.put("UUID", tags.split(";")[10].replaceFirst("user-id=", ""));
+			boolean found = false;
+			for(int i=0; i<tags.split(";").length && !found; i++){
+				
+				if(tags.split(";")[i].contains("user-id=")){
+					
+					ans.put("UUID", tags.split(";")[i].replaceFirst("user-id=", ""));
+					found = true;
+					
+				}
+				
 			}
-			
 			
 			new API(ans);
 			

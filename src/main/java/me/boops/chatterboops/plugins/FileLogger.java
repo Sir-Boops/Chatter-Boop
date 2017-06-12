@@ -1,4 +1,4 @@
-package me.boops.chatterboops.commands.logger;
+package me.boops.chatterboops.plugins;
 
 import java.io.BufferedWriter;
 import java.io.File;

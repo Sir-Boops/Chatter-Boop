@@ -1,4 +1,4 @@
-package me.boops.chatterboops.commands.command;
+package me.boops.chatterboops.plugins;
 
 import org.json.JSONObject;
 

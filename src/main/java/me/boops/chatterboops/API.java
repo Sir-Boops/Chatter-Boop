@@ -2,9 +2,9 @@ package me.boops.chatterboops;
 
 import org.json.JSONObject;
 
-import me.boops.chatterboops.commands.boop.BoopCommand;
-import me.boops.chatterboops.commands.command.CommandCommand;
-import me.boops.chatterboops.commands.logger.FileLogger;
+import me.boops.chatterboops.plugins.BoopCommand;
+import me.boops.chatterboops.plugins.CommandCommand;
+import me.boops.chatterboops.plugins.FileLogger;
 
 public class API {
 	
