@@ -14,7 +14,7 @@ public class BoopCommand {
 			
 			if(msg.getString("platform").equals("twitch")){
 				
-				Twitch.sendMSG("/me *boops* @" + msg.getString("userName"));
+				Twitch.sendMSG("/me *boops* @" + msg.getString("userName"), msg.getString("channel"));
 				
 			}
 			

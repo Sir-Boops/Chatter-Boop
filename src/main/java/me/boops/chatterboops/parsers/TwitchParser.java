@@ -37,18 +37,8 @@ public class TwitchParser {
 			ans.put("userName", name);
 			ans.put("platform", "twitch");
 			ans.put("raw", msg);
-			
-			boolean found = false;
-			for(int i=0; i<tags.split(";").length && !found; i++){
-				
-				if(tags.split(";")[i].contains("user-id=")){
-					
-					ans.put("UUID", tags.split(";")[i].replaceFirst("user-id=", ""));
-					found = true;
-					
-				}
-				
-			}
+			ans.put("UUID", getUUID(tags));
+			ans.put("channel", split[3].replace("#", ""));
 			
 			new API(ans);
 			
@@ -75,6 +65,25 @@ public class TwitchParser {
 		
 		if(msg.split(";")[10].contains("turbo=0") && ans == 1){
 			ans = 1;
+		}
+		
+		return ans;
+		
+	}
+	
+	private String getUUID(String tags){
+		
+		String ans = "";
+		boolean found = false;
+		for(int i=0; i<tags.split(";").length && !found; i++){
+			
+			if(tags.split(";")[i].contains("user-id=")){
+				
+				ans = tags.split(";")[i].replaceFirst("user-id=", "");
+				found = true;
+				
+			}
+			
 		}
 		
 		return ans;

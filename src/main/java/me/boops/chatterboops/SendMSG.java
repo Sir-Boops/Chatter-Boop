@@ -12,7 +12,7 @@ public class SendMSG {
 		
 		// Send a message to twitch
 		if(raw.getString("platform").equals("twitch")){
-			Twitch.sendMSG(msg);
+			Twitch.sendMSG(msg, raw.getString("channel"));
 		}
 		
 		// Send a message to mixer

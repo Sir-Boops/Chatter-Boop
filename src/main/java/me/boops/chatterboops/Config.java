@@ -13,15 +13,11 @@ public class Config {
 	boolean enableTwitch;
 	private String twitchBotName;
 	private String TwitchOauthKey;
+	private String TwitchClientID;
 	
 	// Mixer Strings
 	private boolean enableMixer;
 	private String MixerOauth;
-	
-	// Smash Strings
-	private boolean enableSmash;
-	private String smashName;
-	private String smashPass;
 	
 	// Youtube Strings
 	private boolean enableYoutube;
@@ -57,15 +53,11 @@ public class Config {
 		this.enableTwitch = config.getJSONObject("twitch").getBoolean("enable");
 		this.twitchBotName = config.getJSONObject("twitch").getString("name").toLowerCase();
 		this.TwitchOauthKey = config.getJSONObject("twitch").getString("oauth");
+		this.TwitchClientID = config.getJSONObject("twitch").getString("clientID");
 		
 		// Get Mixer Strings
 		this.enableMixer = config.getJSONObject("mixer").getBoolean("enable");
 		this.MixerOauth = config.getJSONObject("mixer").getString("oauth");
-		
-		// Get Smash strings
-		this.enableSmash = config.getJSONObject("smash").getBoolean("enable");
-		this.smashName = config.getJSONObject("smash").getString("user");
-		this.smashPass = config.getJSONObject("smash").getString("pass");
 		
 		// Get Youtube strings
 		this.enableTwitch = config.getJSONObject("youtube").getBoolean("enable");
@@ -91,6 +83,10 @@ public class Config {
 		return this.TwitchOauthKey;
 	}
 	
+	public String getTwitchClientID(){
+		return this.TwitchClientID;
+	}
+	
 	// Return Mixer strings
 	
 	public boolean enableMixer(){
@@ -101,19 +97,6 @@ public class Config {
 		return this.MixerOauth;
 	}
 	
-	// Return Smash strings
-	
-	public boolean enableSmash(){
-		return this.enableSmash;
-	}
-	
-	public String getSmashName(){
-		return this.smashName;
-	}
-	
-	public String getSmashPass(){
-		return this.smashPass;
-	}
 	
 	// Return Youtube strings
 	public boolean enableYoutube(){
