@@ -2,7 +2,6 @@ package me.boops.chatterboops.parsers;
 
 import org.json.JSONObject;
 
-import me.boops.chatterboops.API;
 import me.boops.chatterboops.Youtube.Youtube;
 
 public class YoutubeParser {
@@ -24,7 +23,9 @@ public class YoutubeParser {
 		ans.put("platform", "youtube");
 		ans.put("raw", msg.toString());
 		
-		new API(ans);
+		System.out.println(ans);
+		
+		//new API(ans);
 		
 	}
 }

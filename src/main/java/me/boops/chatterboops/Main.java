@@ -29,7 +29,7 @@ public class Main {
 			}
 		}).start();
 		
-		// Launch mixer sub thread
+		// Launch Mixer sub thread
 		new Thread(new Runnable(){
 			
 			public void run(){

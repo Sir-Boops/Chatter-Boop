@@ -17,19 +17,16 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import me.boops.chatterboops.Config;
+import me.boops.chatterboops.Main;
 import me.boops.chatterboops.parsers.YoutubeParser;
 
 public class Youtube {
 	
 	private static String authKey;
 	private List<String> parsedMessageIDs = new ArrayList<String>();
-	private static Config conf;
 	
 	
-	public Youtube(Config confInit) throws Exception {
-		
-		Youtube.conf = confInit;
+	public Youtube() throws Exception {
 		
 		// Get the auth key and save it
 		authKey = getOauthToken();
@@ -58,6 +55,7 @@ public class Youtube {
 			
 			Thread.sleep(sleepTime);
 			sleepTime = readLiveChat();
+			sleepTime = 1000;
 			
 		}
 		
@@ -71,9 +69,9 @@ public class Youtube {
 		
 		// Build the post request
 		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-		urlParameters.add(new BasicNameValuePair("refresh_token", conf.getYoutubeToken()));
-		urlParameters.add(new BasicNameValuePair("client_id", conf.getYoutubeClientID()));
-		urlParameters.add(new BasicNameValuePair("client_secret", conf.getYoutubeClientSec()));
+		urlParameters.add(new BasicNameValuePair("refresh_token", Main.conf.getYoutubeToken()));
+		urlParameters.add(new BasicNameValuePair("client_id", Main.conf.getYoutubeClientID()));
+		urlParameters.add(new BasicNameValuePair("client_secret", Main.conf.getYoutubeClientSec()));
 		urlParameters.add(new BasicNameValuePair("grant_type", "refresh_token"));
 		
 		post.setEntity(new UrlEncodedFormEntity(urlParameters));
@@ -100,7 +98,7 @@ public class Youtube {
 	private int readLiveChat() throws Exception {
 		
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
-		HttpGet get = new HttpGet("https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet&maxResults=2000&liveChatId=" + conf.getYoutubeChatID());
+		HttpGet get = new HttpGet("https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet&maxResults=2000&liveChatId=" + Main.conf.getYoutubeChatID());
 		get.addHeader("Authorization", "Bearer " + authKey);
 		
 		HttpResponse res = client.execute(get);
@@ -125,7 +123,7 @@ public class Youtube {
 				// And ignore myself
 				
 				if(!parsedMessageIDs.contains(messages.getJSONObject(i).getString("id")) && 
-						!messages.getJSONObject(i).getJSONObject("snippet").getString("authorChannelId").equals(conf.getYoutubeBotChannelID())){
+						!messages.getJSONObject(i).getJSONObject("snippet").getString("authorChannelId").equals(Main.conf.getYoutubeBotChannelID())){
 					
 					new YoutubeParser(messages.getJSONObject(i));
 					
@@ -179,7 +177,7 @@ public class Youtube {
 		JSONObject jsonMSG = new JSONObject();
 		
 		jsonMSG.put("messageText", msg);
-		snippet.put("liveChatId", conf.getYoutubeChatID());
+		snippet.put("liveChatId", Main.conf.getYoutubeChatID());
 		snippet.put("type", "textMessageEvent");
 		snippet.put("textMessageDetails", jsonMSG);
 		body.put("snippet", snippet);
