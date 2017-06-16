@@ -20,7 +20,7 @@ public class BoopCommand {
 			
 			if(msg.getString("platform").equals("mixer")){
 				
-				Mixer.sendMSG("/me *boops* @" + msg.getString("userName"));
+				Mixer.sendMSG("/me *boops* @" + msg.getString("userName"), msg.getInt("channel"));
 				
 			}
 			

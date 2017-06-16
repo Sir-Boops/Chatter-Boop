@@ -78,6 +78,7 @@ public class MixerParser {
 		ans.put("userName", msg.getJSONObject("data").getString("user_name"));
 		ans.put("UUID", msg.getJSONObject("data").getInt("user_id"));
 		ans.put("platform", "mixer");
+		ans.put("channel", msg.getJSONObject("data").getInt("channel"));
 		ans.put("raw", msg.toString());
 		
 		if(!msg.getJSONObject("data").getString("user_name").toLowerCase().equals("boop_bot")){

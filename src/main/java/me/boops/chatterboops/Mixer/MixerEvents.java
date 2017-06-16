@@ -13,6 +13,7 @@ public class MixerEvents extends WebSocketAdapter {
 		
 		super.onWebSocketText(message);
 		try {
+			System.out.print(message);
 			new MixerParser(new JSONObject(message));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

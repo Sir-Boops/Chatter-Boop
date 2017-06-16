@@ -51,7 +51,7 @@ public class CommandCommand {
 					body.put("msg", commMSG);
 					
 					DB.setEntry(comm, body);
-					new SendMSG("Set command!", msg.getString("platform"));
+					new SendMSG("Set command!", msg);
 					
 				}
 				
@@ -71,11 +71,11 @@ public class CommandCommand {
 		
 		if(msg.getString("msg").charAt(0) == '~'){
 			
-			JSONObject body = DB.getEntry(msg.getString("msg").split(" ")[0].toLowerCase());
+			JSONObject body = (JSONObject) DB.getEntry(msg.getString("msg").split(" ")[0].toLowerCase());
 			
 			if(body != null){
 				
-				new SendMSG(body.getString("msg"), msg.getString("platform"));
+				new SendMSG(body.getString("msg"), msg);
 				
 			}
 			

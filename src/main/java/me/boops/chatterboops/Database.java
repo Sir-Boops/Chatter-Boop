@@ -90,7 +90,7 @@ public class Database {
 	}
 	
 	
-	public void setEntry(String name, JSONObject body) throws Exception {
+	public void setEntry(String name, Object body) throws Exception {
 		
 		db.put(name, body);
 		saveDB();
@@ -104,11 +104,11 @@ public class Database {
 		
 	}
 	
-	public JSONObject getEntry(String name){
+	public Object getEntry(String name){
 		
 		// Check if real
 		if(db.has(name)){
-			return db.getJSONObject(name);
+			return db.get(name);
 		} else {
 			return null;
 		}

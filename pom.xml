@@ -29,11 +29,11 @@
                         <artifactId>websocket-api</artifactId>
                         <version>9.4.5.v20170502</version>
                 </dependency>
-		<dependency>
-			<groupId>io.socket</groupId>
-			<artifactId>socket.io-client</artifactId>
-			<version>0.8.3</version>
-		</dependency>
+                <dependency>
+                        <groupId>org.eclipse.jetty.websocket</groupId>
+                        <artifactId>websocket-server</artifactId>
+                        <version>9.4.5.v20170502</version>
+                </dependency>
 	</dependencies>
 
 

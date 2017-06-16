@@ -28,7 +28,7 @@ public class Roll {
 				
 				int roll = rand.nextInt(max - 1) + 1;
 				
-				new SendMSG("Your random number is: " + roll, msg.getString("platform"));
+				new SendMSG("Your random number is: " + roll, msg);
 				
 			}
 			

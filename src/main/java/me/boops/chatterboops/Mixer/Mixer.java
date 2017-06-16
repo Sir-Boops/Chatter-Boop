@@ -2,6 +2,8 @@ package me.boops.chatterboops.Mixer;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Future;
 
@@ -20,69 +22,98 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import me.boops.chatterboops.Config;
+import me.boops.chatterboops.Database;
 
 public class Mixer {
 	
 	// Random
-	Random rand = new Random();
+	private static Random rand = new Random();
+	private static Config conf;
 	
-	private static Session session;
+	// Bot ID
+	public static int botID = 0;
+	public static int botChannel = 0;
+	
+	//User List
+	private static List<Session> sessionList = new ArrayList<Session>();
+	public static List<Integer> userList = new ArrayList<Integer>();
+	
 	
 	public Mixer(Config conf) throws Exception {
 		
-		int userID = getUserID(conf.getMixerOauth());
-		String[] authNURL = setupChat(conf.getMixerOauth(), userID);
+		Mixer.conf = conf;
 		
-		String authKey = authNURL[0];
-		String chatURL = authNURL[1];
+		// Join the bots channel
+		JoinChannel(UserInfo.getBotUserINFO());
 		
-		WebSocketClient sockWebSocket = new WebSocketClient(new SslContextFactory());
-		sockWebSocket.start();
-		MixerEvents socket = new MixerEvents();
-		Future<Session> fut = sockWebSocket.connect(socket, URI.create(chatURL));
-		session = fut.get();
+		// On inital startup get other channels to join
+		Database DB = new Database("users");
 		
-		JSONObject login = new JSONObject();
-		JSONArray args = new JSONArray();
+		JSONArray users = (JSONArray) DB.getEntry("users");
 		
-		args.put(32238);
-		args.put(userID);
-		args.put(authKey);
-		
-		login.put("type", "method");
-		login.put("method", "auth");
-		login.put("id", 0);
-		login.put("arguments", args);
-		
-		session.getRemote().sendString(login.toString());
+		for(int i=0; users.length()>i; i++){
+			
+			JoinChannel(UserInfo.getBasicUserINFO((int) users.get(i)));
+		}
 		
 	}
 	
-	// Get bots UserID
-	
-	private int getUserID(String authToken) throws Exception {
+	public static void JoinChannel(int channelID) throws Exception{
 		
-		// Get Bot UserID
-		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
-		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
-		HttpGet get = new HttpGet("https://mixer.com/api/v1/users/current");
-		get.addHeader("Authorization", "Bearer " + authToken);
+		String[] authURL = setupChat(conf.getMixerOauth(), channelID);
 		
-		HttpResponse res = client.execute(get);
-		String meta = new BasicResponseHandler().handleResponse(res);
+		String authKey = authURL[0];
+		String chatURL = authURL[1];
 		
-		return new JSONObject(meta).getInt("id");
+		// Launch mixer sub thread
+		new Thread(new Runnable(){
+			
+			public void run(){
+				
+				try {
+					
+					Session session;
+					
+					WebSocketClient sockWebSocket = new WebSocketClient(new SslContextFactory());
+					sockWebSocket.start();
+					MixerEvents socket = new MixerEvents();
+					Future<Session> fut = sockWebSocket.connect(socket, URI.create(chatURL));
+					session = fut.get();
+					
+					JSONObject login = new JSONObject();
+					JSONArray args = new JSONArray();
+					
+					args.put(channelID);
+					args.put(Mixer.botID);
+					args.put(authKey);
+					
+					login.put("type", "method");
+					login.put("method", "auth");
+					login.put("id", 0);
+					login.put("arguments", args);
+					
+					session.getRemote().sendString(login.toString());
+					
+					Mixer.sessionList.add(session);
+					Mixer.userList.add(channelID);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}).start();
 		
 	}
 	
 	
 	// Get chat URL and auth key
-	private String[] setupChat(String authToken, int uderID) throws Exception {
+	private static String[] setupChat(String authToken, int ChannelID) throws Exception {
 		
 		// Get the chat auth token
 		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
-		HttpGet get = new HttpGet("https://mixer.com/api/v1/chats/32238");
+		HttpGet get = new HttpGet("https://mixer.com/api/v1/chats/" + ChannelID);
 		get.addHeader("Authorization", "Bearer " + authToken);
 		
 		HttpResponse res = client.execute(get);
@@ -99,7 +130,7 @@ public class Mixer {
 	}
 	
 	// Write to chat
-	public static void sendMSG(String msg) {
+	public static void sendMSG(String msg, int channelID) {
 		
 		JSONObject main = new JSONObject();
 		JSONArray message = new JSONArray();
@@ -114,7 +145,17 @@ public class Mixer {
 		
 			
 		try {
-			session.getRemote().sendString(main.toString());
+			
+			for(int i=0; Mixer.userList.size() > i; i++){
+				
+				if(Mixer.userList.get(i) == channelID){
+					
+					Mixer.sessionList.get(i).getRemote().sendString(main.toString());
+					
+				}
+				
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

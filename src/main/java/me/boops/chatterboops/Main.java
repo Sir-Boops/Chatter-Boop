@@ -1,34 +1,18 @@
 package me.boops.chatterboops;
 
 import me.boops.chatterboops.Mixer.Mixer;
-import me.boops.chatterboops.Twitch.Twitch;
-import me.boops.chatterboops.Youtube.Youtube;
 
 public class Main {
 	
+	
+	// Load the config
+	public static Config conf = new Config();
+	
 	public static void main(String[] args) throws Exception {
-		
-		// Load the config
-		Config conf = new Config();
 		
 		// The main class inits all the chats
 		
-		// Launch the Twitch client
-		new Thread(new Runnable(){
-			
-			public void run(){
-				
-				try {
-
-					new Twitch(conf);
-					
-				} catch (Exception e){
-					e.printStackTrace();
-				}
-			}
-		}).start();
-		
-		// Launch the mixer client
+		// Launch mixer sub thread
 		new Thread(new Runnable(){
 			
 			public void run(){
@@ -36,22 +20,6 @@ public class Main {
 				try {
 					
 					new Mixer(conf);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-			}
-		}).start();
-		
-		// Launch the Youtube client
-		new Thread(new Runnable(){
-			
-			public void run(){
-				
-				try {
-					
-					new Youtube(conf);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

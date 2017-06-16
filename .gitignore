@@ -8,4 +8,4 @@ custom_commands
 target/
 dependency-reduced-pom.xml
 DBs/
-chatLog.txt
+*.txt
