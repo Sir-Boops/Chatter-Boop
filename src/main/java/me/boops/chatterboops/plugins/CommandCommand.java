@@ -10,7 +10,7 @@ public class CommandCommand {
 	public CommandCommand(JSONObject msg) throws Exception {
 		
 		// Load the dababase
-		Database DB = new Database(msg.get("channel").toString() + "_commands");
+		Database DB = new Database("mixer_" + msg.get("channel").toString() + "_commands");
 		
 		// The command command
 		if(msg.getString("msg").toLowerCase().indexOf("~command") == 0){
