@@ -21,14 +21,13 @@ import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import me.boops.chatterboops.Config;
 import me.boops.chatterboops.Database;
+import me.boops.chatterboops.Main;
 
 public class Mixer {
 	
 	// Random
 	private static Random rand = new Random();
-	private static Config conf;
 	
 	// Bot ID
 	public static int botID = 0;
@@ -39,10 +38,7 @@ public class Mixer {
 	public static List<Integer> userList = new ArrayList<Integer>();
 	
 	
-	public Mixer(Config conf) throws Exception {
-		
-		Mixer.conf = conf;
-		
+	public Mixer() throws Exception {
 		// Join the bots channel
 		JoinChannel(UserInfo.getBotUserINFO());
 		
@@ -64,7 +60,7 @@ public class Mixer {
 	
 	public static void JoinChannel(int channelID) throws Exception{
 		
-		String[] authURL = setupChat(conf.getMixerOauth(), channelID);
+		String[] authURL = setupChat(Main.conf.getMixerOauth(), channelID);
 		
 		String authKey = authURL[0];
 		String chatURL = authURL[1];

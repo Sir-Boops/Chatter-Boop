@@ -19,7 +19,7 @@ public class Main {
 				
 				try {
 					
-					new Mixer(conf);
+					new Mixer();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
