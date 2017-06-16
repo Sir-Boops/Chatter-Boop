@@ -18,9 +18,15 @@ public class ChannelJoin {
 				// Check to make sure the bot is in the bots channel
 				if(msg.getInt("channel") == Mixer.botChannel){
 					
-					Database DB = new Database("users");
+					Database DB = new Database("mixer_users");
 					
 					JSONArray users = (JSONArray) DB.getEntry("users");
+					
+					if(users == null){
+						
+						users = new JSONArray();
+						
+					}
 					
 					users.put(msg.getInt("UUID"));
 					

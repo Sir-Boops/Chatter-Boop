@@ -47,13 +47,17 @@ public class Mixer {
 		JoinChannel(UserInfo.getBotUserINFO());
 		
 		// On inital startup get other channels to join
-		Database DB = new Database("users");
+		Database DB = new Database("mixer_users");
 		
 		JSONArray users = (JSONArray) DB.getEntry("users");
 		
-		for(int i=0; users.length()>i; i++){
+		if(users != null){
 			
-			JoinChannel(UserInfo.getBasicUserINFO((int) users.get(i)));
+			for(int i=0; users.length()>i; i++){
+				
+				JoinChannel(UserInfo.getBasicUserINFO((int) users.get(i)));
+			}
+			
 		}
 		
 	}
