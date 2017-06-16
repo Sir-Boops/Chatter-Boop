@@ -56,7 +56,7 @@ public class MixerParser {
 			}
 			
 			// If Mod
-			if(userLevel < 5 && roleList.get(i).toString().toLowerCase().equals("owner")){
+			if(userLevel < 5 && roleList.get(i).toString().toLowerCase().equals("mod")){
 				userLevel = 4;
 			}
 			

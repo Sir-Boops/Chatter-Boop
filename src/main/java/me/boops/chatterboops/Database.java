@@ -34,6 +34,8 @@ public class Database {
 						
 					}
 					
+				} else {
+					initDBSetup(currentDir, databaseName);
 				}
 				
 			}
@@ -57,6 +59,8 @@ public class Database {
 		out.print(db);
 		out.flush();
 		out.close();
+		
+		loadDB(path, dbName);
 		
 	}
 	

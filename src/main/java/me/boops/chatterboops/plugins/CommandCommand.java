@@ -10,7 +10,7 @@ public class CommandCommand {
 	public CommandCommand(JSONObject msg) throws Exception {
 		
 		// Load the dababase
-		Database DB = new Database("commands");
+		Database DB = new Database(msg.get("channel").toString() + "_commands");
 		
 		// The command command
 		if(msg.getString("msg").toLowerCase().indexOf("~command") == 0){
@@ -62,6 +62,7 @@ public class CommandCommand {
 				if(msg.getString("msg").split(" ")[1].toLowerCase().equals("del")){
 					
 					DB.delEntry(msg.getString("msg").split(" ")[2].toLowerCase());
+					new SendMSG("Deleted the command", msg);
 					
 				}
 				
