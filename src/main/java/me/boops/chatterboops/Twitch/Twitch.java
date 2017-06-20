@@ -83,7 +83,7 @@ public class Twitch {
 		sendRaw("Join #" + channel);
 	}
 	
-	// Convert
+	// Convert UUID to name
 	public static String uuidToName(int UUID) throws Exception {
 		
 		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
@@ -98,4 +98,18 @@ public class Twitch {
 		return meta.getString("name").toLowerCase();
 	}
 	
+	//convert name to UUID
+	public static int nameToUUID(String name) throws Exception {
+		
+		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
+		HttpGet get = new HttpGet("https://api.twitch.tv/kraken/users?login=" + name);
+		get.addHeader("Accept", "application/vnd.twitchtv.v5+json");
+		get.addHeader("Client-ID", Main.conf.getTwitchClientID());
+		
+		HttpResponse res = client.execute(get);
+		JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+		
+		return meta.getJSONArray("users").getJSONObject(0).getInt("_id");
+	}
 }

@@ -8,6 +8,7 @@ import me.boops.chatterboops.plugins.CommandCommand;
 import me.boops.chatterboops.plugins.CommandLink;
 import me.boops.chatterboops.plugins.FileLogger;
 import me.boops.chatterboops.plugins.FileLoggerRAW;
+import me.boops.chatterboops.plugins.FollowAge;
 import me.boops.chatterboops.plugins.Roll;
 
 public class API {
@@ -21,7 +22,8 @@ public class API {
 		new BoopCommand(msg);
 		new CommandCommand(msg);
 		new Roll(msg);
-		//new FollowAge(msg);
+		new FollowAge(msg);
+		//new SongRequest(msg);
 		new CommandLink(msg);
 		
 		

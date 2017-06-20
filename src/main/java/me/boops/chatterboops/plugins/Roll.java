@@ -20,6 +20,11 @@ public class Roll {
 				
 				max = Integer.parseInt(msg.getString("msg").split(" ")[1]);
 				
+				if(max <= 1){
+					new SendMSG("Rude trying to crash me!", msg);
+					max = 0;
+				}
+				
 			} catch (Exception e){
 				e.printStackTrace();
 			}
