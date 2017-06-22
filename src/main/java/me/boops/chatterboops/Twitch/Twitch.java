@@ -73,6 +73,10 @@ public class Twitch {
 		sendRaw("Join #" + channel);
 	}
 	
+	public static void leaveChannel(String channel) throws Exception{
+		sendRaw("part #" + channel);
+	}
+	
 	// Convert UUID to name
 	public static String uuidToName(int UUID) throws Exception {
 		

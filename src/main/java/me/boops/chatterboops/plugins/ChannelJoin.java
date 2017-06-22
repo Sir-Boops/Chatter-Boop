@@ -15,7 +15,7 @@ import me.boops.chatterboops.Twitch.Twitch;
 
 public class ChannelJoin {
 	
-	public ChannelJoin(JSONObject msg) throws Exception{
+	public ChannelJoin(JSONObject msg) throws Exception {
 		
 		if(msg.getString("msg").toLowerCase().equals("~join")){
 			

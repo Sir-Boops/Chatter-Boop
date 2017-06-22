@@ -6,9 +6,8 @@ import me.boops.chatterboops.plugins.BoopCommand;
 import me.boops.chatterboops.plugins.ChannelJoin;
 import me.boops.chatterboops.plugins.CommandCommand;
 import me.boops.chatterboops.plugins.CommandLink;
-import me.boops.chatterboops.plugins.FileLogger;
-import me.boops.chatterboops.plugins.FileLoggerRAW;
 import me.boops.chatterboops.plugins.FollowAge;
+import me.boops.chatterboops.plugins.Leave;
 import me.boops.chatterboops.plugins.Roll;
 
 public class API {
@@ -25,11 +24,12 @@ public class API {
 		new FollowAge(msg);
 		//new SongRequest(msg);
 		new CommandLink(msg);
+		new Leave(msg);
 		
 		
 		
-		new FileLoggerRAW(msg);
-		new FileLogger(msg);
+		//new FileLoggerRAW(msg);
+		//new FileLogger(msg);
 		
 		System.out.println(msg);
 		

@@ -33,7 +33,7 @@ public class Mixer {
 	public static int botChannel = 0;
 	
 	//User List
-	private static List<Session> sessionList = new ArrayList<Session>();
+	public static List<Session> sessionList = new ArrayList<Session>();
 	public static List<Integer> userList = new ArrayList<Integer>();
 	
 	
