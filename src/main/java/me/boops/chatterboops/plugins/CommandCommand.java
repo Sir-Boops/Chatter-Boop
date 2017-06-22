@@ -1,117 +1,310 @@
 package me.boops.chatterboops.plugins;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 
-import me.boops.chatterboops.Database;
+import me.boops.chatterboops.Main;
 import me.boops.chatterboops.SendMSG;
+import me.boops.chatterboops.Twitch.Twitch;
 
 public class CommandCommand {
 	
 	public CommandCommand(JSONObject msg) throws Exception {
 		
-		// Load the dababase
-		Database DB = new Database(msg.getString("platform") + "_" + msg.get("UUID").toString() + "_commands");
-		
 		// The command command
-		if(msg.getString("msg").toLowerCase().indexOf("~command") == 0){
+		if(msg.getString("msg").toLowerCase().indexOf("~command") == 0) {
 			
-			if(DB.getEntry("link") == null){
+			if(msg.getString("msg").split(" ").length >= 3) {
 				
+				String[] link = getLink(msg);
 				
-				// The base command
-				if(msg.getString("msg").toLowerCase().equals("~command")){
-					//Twitch.sendMSG("'~command help' for help");
-				}
-				
-				// The add command
-				if(msg.getString("msg").split(" ").length >= 5 && msg.getInt("userLevel") >= 4){
+				if(link == null) {
 					
-					if(msg.getString("msg").split(" ")[1].toLowerCase().equals("add") || msg.getString("msg").split(" ")[1].toLowerCase().equals("modify")){
+					if(msg.getString("msg").toLowerCase().split(" ")[1].equals("set")) {
 						
+						String[] split = msg.getString("msg").split(" ");
 						
-						// Add to the DB
 						JSONObject body = new JSONObject();
 						
-						String comm = msg.getString("msg").split(" ")[2].toLowerCase();
-						int level = new Integer(msg.getString("msg").split(" ")[msg.getString("msg").split(" ").length - 1]);
-						String commMSG = "";
+						if(msg.getString("platform").equals("twitch")){
+							body.put("channel", Twitch.nameToUUID(msg.getString("channel")));
+						}
 						
-						for (int i=3; i<(msg.getString("msg").split(" ").length - 1); i++){
+						if(msg.getString("platform").equals("mixer")){
+							body.put("channel", msg.getInt("channel"));
+						}
+						
+						body.put("command", split[2].toLowerCase());
+						
+						String msgBody = "";
+						
+						for(int i=3; i<(split.length - 1); i++){
 							
 							if(i == 3){
 								
-								commMSG += (msg.getString("msg").split(" ")[i]);
+								msgBody += split[i];
 								
 							} else {
 								
-								commMSG += (" " + msg.getString("msg").split(" ")[i]);
+								msgBody += (" " + split[i]);
 								
 							}
 							
 						}
 						
-						body.put("userLevel", level);
-						body.put("msg", commMSG);
+						body.put("body", msgBody);
+						body.put("level", split[split.length - 1]);
 						
-						DB.setEntry(comm, body);
-						new SendMSG("Set command!", msg);
+						// Add to the joinUsersDB
+						HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+						HttpPost post = new HttpPost(Main.API_URL + "v1/" + msg.getString("platform") + "/setcommand");
+						post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+						post.setHeader("Content-type", "application/json");
+						post.setEntity(new StringEntity(body.toString()));
+						
+						HttpResponse res = client.execute(post);
+						JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+						
+						if(meta.getString("status").equals("ok")){
+							new SendMSG("Command Set!", msg);
+						}
 						
 					}
+					
+					if(msg.getString("msg").toLowerCase().split(" ")[1].equals("rm")) {
+						
+						String[] split = msg.getString("msg").split(" ");
+						
+						JSONObject body = new JSONObject();
+						
+						if(msg.getString("platform").equals("twitch")){
+							body.put("channel", Twitch.nameToUUID(msg.getString("channel")));
+						}
+						
+						if(msg.getString("platform").equals("mixer")){
+							body.put("channel", msg.getInt("channel"));
+						}
+						
+						body.put("command", split[2].toLowerCase());
+						
+						// Add to the joinUsersDB
+						HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+						HttpPost post = new HttpPost(Main.API_URL + "v1/" + msg.getString("platform") + "/rmcommand");
+						post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+						post.setHeader("Content-type", "application/json");
+						post.setEntity(new StringEntity(body.toString()));
+						
+						HttpResponse res = client.execute(post);
+						JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+						
+						if(meta.getString("status").equals("ok")){
+							new SendMSG("Command Removed!", msg);
+						}
+						
+					}
+					
+				} else {
+					
+					new SendMSG("Please use " + link[0] + " to set commands", msg);
 					
 				}
 				
-				if(msg.getString("msg").split(" ").length == 3 && msg.getInt("userLevel") >= 4){
+			}
+		}
+		
+		if(msg.getString("msg").toLowerCase().equals("~commands")) {
+			
+			String[] link = getLink(msg);
+			
+			if(link == null){
+				
+				JSONObject body = new JSONObject();
+				
+				if(msg.getString("platform").equals("twitch")){
+					body.put("channel", Twitch.nameToUUID(msg.getString("channel")));
+				}
+				
+				if(msg.getString("platform").equals("mixer")){
+					body.put("channel", msg.getInt("channel"));
+				}
+				
+				// Add to the joinUsersDB
+				HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+				HttpPost post = new HttpPost(Main.API_URL + "v1/" + msg.getString("platform") + "/listcommands");
+				post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+				post.setHeader("Content-type", "application/json");
+				post.setEntity(new StringEntity(body.toString()));
+				
+				HttpResponse res = client.execute(post);
+				JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+				
+				if(meta.getJSONArray("commands").length() > 0){
 					
-					if(msg.getString("msg").split(" ")[1].toLowerCase().equals("del")){
-						
-						DB.delEntry(msg.getString("msg").split(" ")[2].toLowerCase());
-						new SendMSG("Deleted the command", msg);
-						
+					String ans = "Current commands are:";
+					
+					for(int i=0; i<meta.getJSONArray("commands").length(); i++){
+						ans += (" " + meta.getJSONArray("commands").getJSONObject(i).getString("command"));
 					}
+					
+					new SendMSG(ans, msg);
+					
+				} else {
+					
+					new SendMSG("You have no commands!", msg);
 					
 				}
 				
 			} else {
 				
-				JSONObject main = (JSONObject) DB.getEntry("link");
+				JSONObject body = new JSONObject();
 				
-				new SendMSG("Please use: " + main.getString("platform") + " to set commands!", msg);
+				body.put("channel", (int) new Integer(link[1]));
+				
+				// Add to the joinUsersDB
+				HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+				HttpPost post = new HttpPost(Main.API_URL + "v1/" + link[0] + "/listcommands");
+				post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+				post.setHeader("Content-type", "application/json");
+				post.setEntity(new StringEntity(body.toString()));
+				
+				HttpResponse res = client.execute(post);
+				JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+				
+				if(meta.getJSONArray("commands").length() > 0){
+					
+					String ans = "Current commands are:";
+					
+					for(int i=0; i<meta.getJSONArray("commands").length(); i++){
+						ans += (" " + meta.getJSONArray("commands").getJSONObject(i).getString("command"));
+					}
+					
+					new SendMSG(ans, msg);
+					
+				} else {
+					
+					new SendMSG("You have no commands!", msg);
+					
+				}
 				
 			}
 			
 		}
 		
-		if(msg.getString("msg").charAt(0) == '~'){
+		if(msg.getString("msg").charAt(0) == '~') {
 			
-			// Check if a link
-			if(DB.getEntry("link") == null){
+			String[] link = getLink(msg);
+			
+			if(link == null){
 				
-				JSONObject body = (JSONObject) DB.getEntry(msg.getString("msg").split(" ")[0].toLowerCase());
+				JSONObject body = new JSONObject();
 				
-				if(body != null){
-					
-					new SendMSG(body.getString("msg"), msg);
-					
+				if(msg.getString("platform").equals("twitch")){
+					body.put("channel", Twitch.nameToUUID(msg.getString("channel")));
 				}
 				
+				if(msg.getString("platform").equals("mixer")){
+					body.put("channel", msg.getInt("channel"));
+				}
+				
+				// Add to the joinUsersDB
+				HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+				HttpPost post = new HttpPost(Main.API_URL + "v1/" + msg.getString("platform") + "/listcommands");
+				post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+				post.setHeader("Content-type", "application/json");
+				post.setEntity(new StringEntity(body.toString()));
+				
+				HttpResponse res = client.execute(post);
+				JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+				
+				if(meta.getJSONArray("commands").length() > 0){
+					
+					for(int i=0; i<meta.getJSONArray("commands").length(); i++){
+						
+						if(meta.getJSONArray("commands").getJSONObject(i).getString("command").equals(msg.getString("msg").toLowerCase())){
+							if(msg.getInt("userLevel") >= meta.getJSONArray("commands").getJSONObject(i).getInt("level")){
+								new SendMSG(meta.getJSONArray("commands").getJSONObject(i).getString("body"), msg);
+							}
+						}
+					}
+					
+				}
 				
 			} else {
 				
-				Object UUID = ((JSONObject) DB.getEntry("link")).get("UUID");
-				String platform = ((JSONObject) DB.getEntry("link")).getString("platform");
+				JSONObject body = new JSONObject();
 				
-				Database NewDB = new Database(platform + "_" + UUID + "_commands");
+				body.put("channel", (int) new Integer(link[1]));
 				
-				JSONObject body = (JSONObject) NewDB.getEntry(msg.getString("msg").split(" ")[0].toLowerCase());
+				// Add to the joinUsersDB
+				HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+				HttpPost post = new HttpPost(Main.API_URL + "v1/" + link[0] + "/listcommands");
+				post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+				post.setHeader("Content-type", "application/json");
+				post.setEntity(new StringEntity(body.toString()));
 				
-				if(body != null){
+				HttpResponse res = client.execute(post);
+				JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+				
+				if(meta.getJSONArray("commands").length() > 0){
 					
-					new SendMSG(body.getString("msg"), msg);
+					for(int i=0; i<meta.getJSONArray("commands").length(); i++){
+						
+						if(meta.getJSONArray("commands").getJSONObject(i).getString("command").equals(msg.getString("msg").toLowerCase())){
+							if(msg.getInt("userLevel") >= meta.getJSONArray("commands").getJSONObject(i).getInt("level")){
+								new SendMSG(meta.getJSONArray("commands").getJSONObject(i).getString("body"), msg);
+							}
+						}
+					}
 					
 				}
 				
+				
 			}
 		}
+	}
+	
+	private String[] getLink(JSONObject msg) throws Exception {
+		
+		
+		JSONObject body = new JSONObject();
+		
+		if(msg.getString("platform").equals("twitch")){
+			body.put("channel", Twitch.nameToUUID(msg.getString("channel")));
+		}
+		
+		if(msg.getString("platform").equals("mixer")){
+			body.put("channel", msg.getInt("channel"));
+		}
+		
+		// Check for a link
+		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+		HttpPost post = new HttpPost(Main.API_URL + "v1/" + msg.getString("platform") + "/linkcheck");
+		post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+		post.setHeader("Content-type", "application/json");
+		post.setEntity(new StringEntity(body.toString()));
+		
+		HttpResponse res = client.execute(post);
+		JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+		
+		String[] ans = new String[2];
+		
+		if(meta.getBoolean("linked")){
+			
+			ans[0] = meta.getString("platform");
+			ans[1] = Integer.toString(meta.getInt("link"));
+			
+		} else {
+			ans = null;
+		}
+		
+		return ans;
 		
 	}
+	
 }

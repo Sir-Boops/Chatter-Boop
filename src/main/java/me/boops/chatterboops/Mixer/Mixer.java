@@ -165,4 +165,19 @@ public class Mixer {
 		return meta.getJSONArray("users");
 		
 	}
+	
+	public static JSONObject searchUser(String userName) throws Exception {
+		
+		// Get the chat auth token
+		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
+		HttpGet get = new HttpGet("https://mixer.com/api/v1/users/search?limit=1&query=" + userName);
+		get.addHeader("Authorization", "Bearer " + Main.conf.getMixerOauth());
+		
+		HttpResponse res = client.execute(get);
+		JSONArray meta = new JSONArray(new BasicResponseHandler().handleResponse(res));
+		
+		return meta.getJSONObject(0);
+		
+	}
 }

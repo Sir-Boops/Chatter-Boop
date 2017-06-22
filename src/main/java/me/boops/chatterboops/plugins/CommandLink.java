@@ -2,62 +2,93 @@ package me.boops.chatterboops.plugins;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import me.boops.chatterboops.Database;
 import me.boops.chatterboops.Main;
+import me.boops.chatterboops.SendMSG;
+import me.boops.chatterboops.Mixer.Mixer;
 import me.boops.chatterboops.Twitch.Twitch;
 
 public class CommandLink {
 	
 	public CommandLink(JSONObject msg) throws Exception {
 		
-		if(msg.getString("msg").split(" ").length == 3){
+		if(msg.getString("msg").split(" ").length >= 2){
 			
 			if(msg.getString("msg").toLowerCase().split(" ")[0].equals("~link") && msg.getInt("userLevel") == 5){
 				
-				String platform = msg.getString("msg").toLowerCase().split(" ")[1];
-				String userName = msg.getString("msg").toLowerCase().split(" ")[2];
-				
-				if(platform.equals("mixer")){
+				if(!msg.getString("msg").split(" ")[1].toLowerCase().equals("remove")){
 					
-					//Link X to mixer
-					Database DB = new Database(msg.getString("platform") + "_" + msg.get("UUID").toString() + "_commands");
+					String platform = msg.getString("msg").toLowerCase().split(" ")[1];
+					String userName = msg.getString("msg").toLowerCase().split(" ")[2];
+					int userID = 0;
 					
-					// Convert a users username to UUID
-					RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
-					HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
-					HttpGet get = new HttpGet("https://mixer.com/api/v1/users/search?limit=1&query=" + userName.toLowerCase());
-					get.addHeader("Authorization", "Bearer " + Main.conf.getMixerOauth());
-					
-					HttpResponse res = client.execute(get);
-					JSONArray meta = new JSONArray(new BasicResponseHandler().handleResponse(res));
-					
-					if(res.getStatusLine().getStatusCode() == 200 && meta.length() >= 1){
-						
-						JSONObject main = new JSONObject();
-						
-						main.put("platform", platform);
-						main.put("UUID", meta.getJSONObject(0).getInt("id"));
-						
-						DB.setEntry("link", main);
-						
-						Twitch.sendMSG("Linked to channel: " + meta.getJSONObject(0).getString("username") + " On platform: " + platform, msg.getString("channel"));
-						
-					} else {
-						
-						Twitch.sendMSG("Could not find user: " + userName, msg.getString("channel"));
-						
+					// convert username to ID
+					if(platform.equals("twitch")){
+						userID = Twitch.nameToUUID(userName);
 					}
+					
+					if(platform.equals("mixer")){
+						userID = Mixer.searchUser(userName).getJSONObject("channel").getInt("id");
+					}
+					
+					JSONObject body = new JSONObject();
+					
+					body.put("platform", platform);
+					body.put("link", userID);
+					
+					if(msg.getString("platform").equals("twitch")){
+						body.put("channel", Twitch.nameToUUID(msg.getString("channel")));
+					}
+					
+					if(msg.getString("platform").equals("mixer")){
+						body.put("channel", msg.getInt("channel"));
+					}
+					
+					HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+					HttpPost post = new HttpPost(Main.API_URL + "v1/" + msg.getString("platform") + "/linkadd");
+					post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+					post.setHeader("Content-type", "application/json");
+					post.setEntity(new StringEntity(body.toString()));
+					
+					HttpResponse res = client.execute(post);
+					JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+					
+					if(meta.getString("status").equals("ok")){
+						new SendMSG("Linked to channel!", msg);
+					}
+					
+				} else {
+					
+					JSONObject body = new JSONObject();
+					
+					if(msg.getString("platform").equals("twitch")){
+						body.put("channel", Twitch.nameToUUID(msg.getString("channel")));
+					}
+					
+					if(msg.getString("platform").equals("mixer")){
+						body.put("channel", msg.getInt("channel"));
+					}
+					
+					HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+					HttpPost post = new HttpPost(Main.API_URL + "v1/" + msg.getString("platform") + "/linkdel");
+					post.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+					post.setHeader("Content-type", "application/json");
+					post.setEntity(new StringEntity(body.toString()));
+					
+					HttpResponse res = client.execute(post);
+					JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+					
+					if(meta.getString("status").equals("ok")){
+						new SendMSG("Removed channel link", msg);
+					}
+					
 				}
-				
 			}
 		}
 	}

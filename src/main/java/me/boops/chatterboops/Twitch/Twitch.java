@@ -74,7 +74,7 @@ public class Twitch {
 	}
 	
 	public static void leaveChannel(String channel) throws Exception{
-		sendRaw("part #" + channel);
+		sendRaw("part  #" + channel);
 	}
 	
 	// Convert UUID to name
