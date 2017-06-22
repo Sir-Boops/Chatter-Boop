@@ -42,9 +42,11 @@ public class FollowAge {
 	
 	private JSONObject MixerAge(JSONObject msg) throws Exception {
 		
+		
+		
 		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
-		HttpGet get = new HttpGet("https://mixer.com/api/v1/channels/32238/analytics/tsdb/followers?from=2015-06-16T14:30:40Z");
+		HttpGet get = new HttpGet("https://mixer.com/api/v1/channels/" + msg.getInt("channel") + "/analytics/tsdb/followers?from=" + getChannelCreationDate(msg.getInt("channel")));
 		get.addHeader("Authorization", "Bearer " + Main.conf.getMixerOauth());
 		
 		HttpResponse res = client.execute(get);
@@ -54,6 +56,20 @@ public class FollowAge {
 		System.out.println(meta);
 		
 		return new JSONObject();
+		
+	}
+	
+	private String getChannelCreationDate(int UUID) throws Exception {
+		
+		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
+		HttpGet get = new HttpGet("https://mixer.com/api/v1/channels/" + UUID);
+		get.addHeader("Authorization", "Bearer " + Main.conf.getMixerOauth());
+		
+		HttpResponse res = client.execute(get);
+		JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+		
+		return meta.getString("createdAt");
 		
 	}
 	

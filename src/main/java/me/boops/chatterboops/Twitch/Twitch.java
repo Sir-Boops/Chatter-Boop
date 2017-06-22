@@ -19,7 +19,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import me.boops.chatterboops.Database;
 import me.boops.chatterboops.Main;
 import me.boops.chatterboops.parsers.TwitchParser;
 
@@ -40,21 +39,12 @@ public class Twitch {
 		
 		sendRaw("Join #" + Main.conf.getTwitchName().toLowerCase());
 		sendRaw("CAP REQ :twitch.tv/tags");
-		
-		// Also join all the channels
-		Database DB = new Database("twitch_users");
-		
-		if(DB.getEntry("users") != null){
+
+		JSONArray users = getJoinList();
+		for(int i=0; users.length()>i; i++){
+			joinChannel(uuidToName(users.getInt(i)));
 			
-			JSONArray users = (JSONArray) DB.getEntry("users");
-			
-			for(int i=0; users.length()>i; i++){
-				
-				joinChannel(uuidToName(users.getInt(i)));
-				
-			}
-			
-		}
+		}		
 					
 		String line = null;
 		while((line = readStream.readLine()) != null){
@@ -111,5 +101,19 @@ public class Twitch {
 		JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
 		
 		return meta.getJSONArray("users").getJSONObject(0).getInt("_id");
+	}
+	
+	public static JSONArray getJoinList() throws Exception {
+		
+		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
+		HttpGet get = new HttpGet(Main.API_URL + "v1/twitch/joinlist");
+		get.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+		
+		HttpResponse res = client.execute(get);
+		JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+		
+		return meta.getJSONArray("users");
+		
 	}
 }

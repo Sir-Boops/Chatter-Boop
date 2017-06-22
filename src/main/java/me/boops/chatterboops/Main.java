@@ -8,6 +8,7 @@ public class Main {
 	
 	// Load the config
 	public static Config conf = new Config();
+	public static String API_URL = "http://[::1]:7777/";
 	
 	public static void main(String[] args) throws Exception {
 		

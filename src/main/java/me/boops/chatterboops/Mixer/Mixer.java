@@ -21,7 +21,6 @@ import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import me.boops.chatterboops.Database;
 import me.boops.chatterboops.Main;
 
 public class Mixer {
@@ -42,18 +41,9 @@ public class Mixer {
 		// Join the bots channel
 		JoinChannel(UserInfo.getBotUserINFO());
 		
-		// On inital startup get other channels to join
-		Database DB = new Database("mixer_users");
-		
-		JSONArray users = (JSONArray) DB.getEntry("users");
-		
-		if(users != null){
-			
-			for(int i=0; users.length()>i; i++){
-				
-				JoinChannel(UserInfo.getBasicUserINFO((int) users.get(i)));
-			}
-			
+		JSONArray users = getJoinList();
+		for(int i=0; users.length()>i; i++){
+			JoinChannel(UserInfo.getBasicUserINFO((int) users.get(i)));
 		}
 		
 	}
@@ -159,6 +149,20 @@ public class Mixer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public static JSONArray getJoinList() throws Exception {
+		
+		RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).setDefaultRequestConfig(customizedRequestConfig).build();
+		HttpGet get = new HttpGet(Main.API_URL + "v1/mixer/joinlist");
+		get.addHeader("Client-Key", Main.conf.getBoopsAPIKey());
+		
+		HttpResponse res = client.execute(get);
+		JSONObject meta = new JSONObject(new BasicResponseHandler().handleResponse(res));
+		
+		return meta.getJSONArray("users");
 		
 	}
 }

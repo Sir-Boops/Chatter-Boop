@@ -27,6 +27,9 @@ public class Config {
 	private String youtubeChatID;
 	private String youtubeBotChannelID;
 	
+	// Boops API Strings
+	private String boopAPIKey;
+	
 	public Config(){
 		
 		StringBuilder sb = new StringBuilder();
@@ -66,6 +69,9 @@ public class Config {
 		this.youtubeToken = config.getJSONObject("youtube").getString("token");
 		this.youtubeChatID = config.getJSONObject("youtube").getString("chatID");
 		this.youtubeBotChannelID = config.getJSONObject("youtube").getString("botChannelID");
+		
+		// Get Boops_API Key
+		this.boopAPIKey = config.getJSONObject("boops_api").getString("key");
 		
 	}
 	
@@ -121,6 +127,11 @@ public class Config {
 	
 	public String getYoutubeBotChannelID(){
 		return this.youtubeBotChannelID;
+	}
+	
+	//Return Boops_API key
+	public String getBoopsAPIKey(){
+		return this.boopAPIKey;
 	}
 	
 }
